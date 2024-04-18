@@ -1,11 +1,9 @@
 import { type User, UserSchema } from "../../types/user";
-import CustomError from "../../functions/error";
+import CustomError from "../../hooks/error";
 import { prisma } from "./../../db/prisma";
 
 export async function AddUser(data: User) {
   const result = UserSchema.safeParse({ data });
-  console.log(data);
-
   if (!result.success) {
     CustomError("Erro ao adicionar usuário!");
   } else {
@@ -24,4 +22,8 @@ export async function AddUser(data: User) {
       };
     }
   }
+}
+
+export async function Login(body: User) {
+  return "logou";
 }

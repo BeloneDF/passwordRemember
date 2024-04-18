@@ -23,5 +23,11 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false
-  }
+  },
+  "paths": {
+    "~libs/*":["./src/libs/*"],
+    "~modules/*":["./src/modules/*"],
+    "~utils/*":["./src/utils/*"],
+    "~middlewares/*":["./src/middlewares/*"]
+  }, 
 }
