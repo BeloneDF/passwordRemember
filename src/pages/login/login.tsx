@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import "./App.css";
 import CardLogin from "../../components/cardLogin";
 import { TextInput } from "../../components/input/text-input/input.tsx";
 import { LargeButton } from "../../components/largeButton/largeButton.styled.ts";
@@ -19,7 +18,7 @@ function App() {
 
   async function login() {
     try {
-      const response = await axios.post("http://localhost:3001/user", {
+      const response = await axios.post("http://localhost:3001/login", {
         username: user.username,
         password: user.password,
         email: "aa@gmail.com",
@@ -31,7 +30,7 @@ function App() {
   }
 
   return (
-    <CardLogin title="Login">
+    <CardLogin title="Login ou Registre-se">
       <TextInput
         data-bs-theme="dark"
         placeholder="Username"
@@ -46,7 +45,7 @@ function App() {
         placeholder="Password"
         value={user.password}
         onChange={(e) => setUser({ ...user, password: e.target.value })}
-        type="text"
+        type="password"
         id="password"
         label="Password"
       />
