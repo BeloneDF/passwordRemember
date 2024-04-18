@@ -1,0 +1,27 @@
+{
+  "name": "back-end",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "scripts": {
+    "migrate": "bunx prisma migrate dev --schema src/prisma/schema.prisma --name create-post-model",
+    "generate-prisma": "bunx prisma generate --schema=src/prisma/schema.prisma",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "bun run --watch --env-file .env src/index.ts"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "@elysiajs/cors": "^1.0.2",
+    "@prisma/client": "^5.12.1",
+    "bunx": "^0.1.0",
+    "elysia": "^1.0.13",
+    "postgres": "^3.4.4",
+    "prisma": "^5.12.1",
+    "resend": "^3.2.0",
+    "zod": "^3.22.4"
+  }
+}
