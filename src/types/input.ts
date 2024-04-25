@@ -10,7 +10,6 @@ export interface InputProps {
   className?: string;
   style?: React.CSSProperties;
   required?: boolean;
-  label?: string;
   ref?: React.LegacyRef<HTMLInputElement> | undefined;
 }
 

@@ -1,4 +1,4 @@
-import HeaderList from "../header/header";
+import HeaderList from "../header/headerList";
 import * as S from "./filter.styled";
 import { useEffect, useState } from "react";
 import { Passwords } from "../../types/passwords";

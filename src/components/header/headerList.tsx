@@ -20,7 +20,7 @@ function HeaderList({ setSearch, search }: HeaderListProps) {
       </S.SearchDiv>
       <S.ButtonDiv>
         <LargeButtonComponent id="button" onClick={() => console.log(1)}>
-          Adicionar nova senha
+          Adicionar senha
         </LargeButtonComponent>
       </S.ButtonDiv>
     </S.Container>

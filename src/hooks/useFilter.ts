@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Passwords } from "../types/passwords";
 
 export function useFilter(passwords: Passwords[]) {
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
 
   const filteredPasswords =
     search.length > 0
@@ -12,6 +12,6 @@ export function useFilter(passwords: Passwords[]) {
   return {
     setSearch,
     search,
-    filteredPasswords
+    filteredPasswords,
   };
 }

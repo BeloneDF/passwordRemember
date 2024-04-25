@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/components/loading/loading.styled.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
