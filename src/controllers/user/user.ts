@@ -1,23 +1,43 @@
-import { type User, UserSchema } from "../../types/user";
-import CustomError from "../../hooks/error";
-import { prisma } from "./../../db/prisma";
+import CustomError from '../../hooks/error';
+import { UserSchema, type User } from '../../types/user';
+import { prisma } from './../../db/prisma';
+
+export async function GetUser() {
+  try {
+    const users = await prisma.user.findMany();
+    return Response.json({ data: users });
+  } catch (e) {
+    return CustomError(`Erro ao buscar usuários: ${e} `);
+  }
+}
 
 export async function AddUser(data: User) {
   const result = UserSchema.safeParse({ data });
+
+  const { password, ...userData } = data; // Extrai a senha do objeto data
+  const hashedPassword: string = await Bun.password.hash(
+    data.password,
+    'bcrypt',
+  );
+
   if (!result.success) {
-    CustomError("Erro ao adicionar usuário!");
+    CustomError('Erro ao adicionar usuário!');
   } else {
     try {
-      const createUser = await prisma.user.create({ data });
+      await prisma.user.create({
+        data: {
+          ...userData,
+          password: hashedPassword,
+        },
+      });
       return {
-        message: "Usuário adicionado com sucesso!",
+        message: 'Usuário adicionado com sucesso!',
         code: 200,
-        data: createUser,
       };
     } catch (error) {
       console.error(error);
       return {
-        message: "Erro ao adicionar usuário!",
+        message: 'Erro ao adicionar usuário!',
         code: 500,
       };
     }
@@ -25,5 +45,40 @@ export async function AddUser(data: User) {
 }
 
 export async function Login(body: User) {
-  return "logou";
+  const { email, password } = body;
+
+  if (!email || typeof email !== 'string') {
+    return new Response('Invalid email', {
+      status: 400,
+    });
+  }
+  if (!password || typeof password !== 'string') {
+    return new Response('invalid password', {
+      status: 400,
+    });
+  }
+  const user = await prisma.user.findFirst({ where: { email } });
+
+  if (!user) {
+    return new Response('Invalid email or password', {
+      status: 400,
+    });
+  }
+
+  const validPassword = await Bun.password.verify(
+    body.password,
+    user.password,
+    'bcrypt',
+  );
+
+  if (!validPassword) {
+    return new Response('Invalid email or password', {
+      status: 400,
+    });
+  }
+
+  return Response.json({
+    message: 'Logou com sucesso!',
+    status: 200,
+  });
 }

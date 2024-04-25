@@ -18,7 +18,7 @@ function runServer() {
       path: "/swagger",
     })
   );
-  app.onError(({ code, error, set }) => NewError({ code, error, set }));
+  //app.onError(({ code, error, set }) => NewError({ code, error, set }));
   app.listen(env.PORT, () => {
     console.log(
       `Servidor rodando em: http://${app.server?.hostname}:${env.PORT}`

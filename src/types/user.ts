@@ -10,6 +10,6 @@ export const UserSchema = z.object({
   data: z.object({
     username: z.string(),
     password: z.string(),
-    email: z.string().optional(),
+    email: z.string().email().optional(),
   }),
 });

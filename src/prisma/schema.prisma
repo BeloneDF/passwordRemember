@@ -8,8 +8,21 @@ datasource db {
 }
 
 model User {
-    id       String @id @default(uuid())
-    username String
-    email    String
-    password String
+    id        String      @id @default(uuid())
+    username  String
+    email     String
+    password  String
+    passwords Passwords[]
+}
+
+model Passwords {
+    id                          String  @id @default(uuid())
+    password                    String
+    name                        String
+    image                       String
+    second_verification         Boolean
+    verificarion_software       String
+    image_verification_software String
+    userId                      String
+    user                        User    @relation(fields: [userId], references: [id])
 }
