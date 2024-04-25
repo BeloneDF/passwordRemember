@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 
 export interface InputProps {
   placeholder?: string;
-  value: string | number;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  value?: string | number;
+  onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   type: React.HTMLInputTypeAttribute;
   name?: string;
   id: string;
@@ -11,6 +11,7 @@ export interface InputProps {
   style?: React.CSSProperties;
   required?: boolean;
   label?: string;
+  ref?: React.LegacyRef<HTMLInputElement> | undefined;
 }
 
 export interface TextAreaProps {
