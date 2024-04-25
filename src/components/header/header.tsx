@@ -1,17 +1,18 @@
-import { useState } from 'react';
-import { TextInput } from '../input/text-input/input';
-import { LargeButtonComponent } from '../largeButton/largeButton';
-import * as S from './header.syled';
-
-function Header() {
-  const [filter, setFilter] = useState('');
+import { TextInput } from "../input/text-input/input";
+import { LargeButtonComponent } from "../largeButton/largeButton";
+import * as S from "./header.syled";
+interface HeaderListProps {
+  setSearch: (value: string) => void;
+  search: string;
+}
+function HeaderList({ setSearch, search }: HeaderListProps) {
   return (
     <S.Container>
       <S.SearchDiv>
         <TextInput
           id="filter"
-          value={filter}
-          onChange={e => setFilter(e.target.value)}
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
           name="filter"
           type="text"
           placeholder="Pesquisar suas senhas"
@@ -26,4 +27,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default HeaderList;

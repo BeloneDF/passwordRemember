@@ -1,12 +1,7 @@
-import Header from '../../components/header/header';
-import * as S from './home.styled';
+import Filter from "../../components/filter/filter";
 
 function Home() {
-  return (
-    <S.Container>
-      <Header key="1" />
-    </S.Container>
-  );
+  return <Filter />;
 }
 
 export default Home;
