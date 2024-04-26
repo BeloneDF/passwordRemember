@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled from "styled-components";
+import { FaRegCopy } from "react-icons/fa6";
 
 export const Container = styled.section`
   width: 30%;
@@ -30,6 +31,7 @@ export const InfoContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
+  gap: 10px;
 `;
 
 export const OtherContainer = styled.div`
@@ -40,7 +42,7 @@ export const OtherContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-export const Name = styled.p`
+export const Name = styled.div`
   color: black;
   font-size: 18px;
   text-transform: capitalize;
@@ -56,15 +58,16 @@ export const PasswordContainer = styled.div`
   height: 25%;
 `;
 
-export const ButtonCopyPassword = styled.button`
+export const ButtonCopyPassword = styled(FaRegCopy)`
   background-color: transparent;
-  width: 30px;
+  width: 15px;
   height: 30px;
   color: gray;
   align-items: center;
   display: flex;
   justify-content: center;
   border: none;
+  cursor: pointer;
 
   &:hover {
     border: none;
@@ -79,20 +82,31 @@ export const CircleSecondVerification = styled.div<CircleSecondVerificationProps
   width: 15px;
   height: 15px;
   border-radius: 50%;
-  background-color: ${props => props.backgroundColor};
+  background-color: ${(props) => props.backgroundColor};
 `;
 
 export const ImageSecondVerification = styled.img`
-  width: 15px;
-  height: 15px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
 `;
 
 export const SecondVerification = styled.div`
   width: 100%;
-  heigth: 25%;
+  height: 25%;
   display: flex;
   flex-direction: row;
   align-items: center;
+  gap: 10px;
+`;
+
+export const LoginDiv = styled.div`
+  font-size: 14px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  text-align: center;
+  color: black;
+  font-weight: 500;
   gap: 10px;
 `;

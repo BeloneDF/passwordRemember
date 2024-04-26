@@ -1,33 +1,33 @@
-import { useEffect, useState } from 'react';
-import { api } from '../../hooks/api';
-import { useFilter } from '../../hooks/useFilter';
-import useOpenModal from '../../hooks/useOpenModa';
-import { Passwords } from '../../types/passwords';
-import FilterList from '../filterList/filterList';
-import HeaderList from '../header/headerList';
-import { TextInput } from '../input/text-input/input';
-import Modal from '../modal/modal';
-import * as S from './filter.styled';
+import { useEffect, useState } from "react";
+import { api } from "../../hooks/api";
+import { useFilter } from "../../hooks/useFilter";
+import useOpenModal from "../../hooks/useOpenModa";
+import { Passwords } from "../../types/passwords";
+import FilterList from "../filterList/filterList";
+import HeaderList from "../header/headerList";
+import { TextInput } from "../input/text-input/input";
+import Modal from "../modal/modal";
+import * as S from "./filter.styled";
 
 function Filter() {
   const [passwords, setPasswords] = useState<Passwords[]>([]);
   const [loading, setLoading] = useState(true);
   const { setSearch, filteredPasswords, search } = useFilter(passwords);
   const { open, toggleModal } = useOpenModal();
-
+  
   const [password, setPassword] = useState<Passwords>({
-    password: '',
-    name: '',
-    image: '',
+    password: "",
+    name: "",
+    image: "",
     second_verification: false,
-    verificarion_software: '',
-    image_verification_software: '',
-    userId: '',
+    verificarion_software: "",
+    image_verification_software: "",
+    userId: "",
   });
 
   async function getPasswords() {
     try {
-      const response = await api.get('passwords');
+      const response = await api.get("passwords");
       setLoading(false);
       setPasswords(response.data.data);
     } catch (error) {
@@ -48,7 +48,9 @@ function Filter() {
           value={password.password}
           label="Digite a sua senha"
           placeholder="Digite sua senha..."
-          onChange={e => setPassword({ ...password, password: e.target.value })}
+          onChange={(e) =>
+            setPassword({ ...password, password: e.target.value })
+          }
           type="password"
         />
       </Modal>
