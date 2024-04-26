@@ -19,6 +19,7 @@ model Passwords {
     id                          String  @id @default(uuid())
     password                    String
     name                        String
+    login                       String
     image                       String
     second_verification         Boolean
     verificarion_software       String

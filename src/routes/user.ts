@@ -24,4 +24,24 @@ export const UserRoutes = (app: Elysia) => {
       console.log(error);
     }
   });
+  app.delete("/users/:id", ({ params }: { params: { id: string } }) => {
+    console.log(params);
+    try {
+      return Controller.DeleteUser(params.id);
+    } catch (error) {
+      console.log(error);
+    }
+  });
+
+  app.put(
+    "/users/:id",
+    ({ params, body }: { params: { id: string }; body: User }) => {
+      console.log("route: ", body);
+      try {
+        return Controller.PutUser({ id: params.id, body });
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  );
 };

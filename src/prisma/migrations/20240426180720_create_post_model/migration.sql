@@ -13,6 +13,7 @@ CREATE TABLE "Passwords" (
     "id" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "name" TEXT NOT NULL,
+    "login" TEXT NOT NULL,
     "image" TEXT NOT NULL,
     "second_verification" BOOLEAN NOT NULL,
     "verificarion_software" TEXT NOT NULL,
