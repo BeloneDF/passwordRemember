@@ -1,6 +1,8 @@
-import * as S from "./filterList.styled";
-import { Passwords } from "../../types/passwords";
-import Loading from "../loading/loading";
+import { Passwords } from '../../types/passwords';
+import Loading from '../loading/loading';
+import PasswordCard from '../passwordCard/passwordCard';
+import * as S from './filterList.styled';
+
 interface FilterListRepo {
   loading: boolean;
   filteredPasswords: Passwords[];
@@ -13,23 +15,12 @@ function FilterList({ loading, filteredPasswords, passwords }: FilterListRepo) {
       {loading ? (
         <Loading />
       ) : filteredPasswords.length > 0 ? (
-        filteredPasswords.map((pass) => {
-          return (
-            <h3
-              style={{ color: "black", textTransform: "capitalize" }}
-              key={pass.id}
-            >
-              {pass.name}
-            </h3>
-          );
+        filteredPasswords.map(pass => {
+          return <PasswordCard key={pass.id} pass={pass} />;
         })
       ) : (
-        passwords.map((pass) => {
-          return (
-            <h3 style={{ color: "black", textTransform: "capitalize" }} key={pass.id}>
-              {pass.name}
-            </h3>
-          );
+        passwords.map(pass => {
+          return <PasswordCard key={pass.id} pass={pass} />;
         })
       )}
     </S.Container>

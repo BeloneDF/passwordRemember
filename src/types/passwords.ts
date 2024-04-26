@@ -1,7 +1,7 @@
-import { z } from "zod";
+import { z } from 'zod';
 
 export interface Passwords {
-  id: string;
+  id?: string;
   password: string;
   name: string;
   image: string;

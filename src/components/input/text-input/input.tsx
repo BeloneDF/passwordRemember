@@ -1,6 +1,6 @@
-import { InputSchema, SelectSchema } from "../../../schemas/input.ts";
-import { InputProps, SelectProps } from "../../../types/input.ts";
-import * as S from "./input.styled.ts";
+import { InputSchema, SelectSchema } from '../../../schemas/input.ts';
+import { InputProps, SelectProps } from '../../../types/input.ts';
+import * as S from './input.styled.ts';
 
 export const TextInput: React.FC<InputProps> = ({
   placeholder,
@@ -13,6 +13,7 @@ export const TextInput: React.FC<InputProps> = ({
   className,
   required,
   ref,
+  label,
 }) => {
   const result = InputSchema.safeParse({
     placeholder,
@@ -25,6 +26,7 @@ export const TextInput: React.FC<InputProps> = ({
     className,
     required,
     ref,
+    label,
   });
 
   if (!result.success) {
@@ -33,6 +35,7 @@ export const TextInput: React.FC<InputProps> = ({
   }
   return (
     <S.Container>
+      {label && label.length > 0 ? <div> {label}</div> : null}
       <S.TextInput
         placeholder={placeholder}
         value={value}
@@ -45,7 +48,6 @@ export const TextInput: React.FC<InputProps> = ({
         required={required}
         autoComplete="off"
         ref={ref}
-        
       />
     </S.Container>
   );

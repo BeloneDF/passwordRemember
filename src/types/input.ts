@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode } from 'react';
 
 export interface InputProps {
   placeholder?: string;
@@ -11,6 +11,7 @@ export interface InputProps {
   style?: React.CSSProperties;
   required?: boolean;
   ref?: React.LegacyRef<HTMLInputElement> | undefined;
+  label: string;
 }
 
 export interface TextAreaProps {
