@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import * as Controller from "../controllers/user/user";
 import { type User } from "../types/user";
-
+import { Auth } from "../middlewares/auth";
 export const UserRoutes = (app: Elysia) => {
   app.post("/user", ({ body }: { body: User }) => {
     try {
@@ -10,16 +10,17 @@ export const UserRoutes = (app: Elysia) => {
       console.error(error);
     }
   });
-  app.post("/login", ({ body }: { body: User }) => {
-    try {
-      return Controller.Login(body);
-    } catch (error) {
-      console.error(error);
-    }
-  });
+
   app.get("/users", () => {
     try {
       return Controller.GetUser();
+    } catch (error) {
+      console.log(error);
+    }
+  });
+  app.get("/users/:id", ({ params }: { params: { id: string } }) => {
+    try {
+      return Controller.GetUserById(params.id);
     } catch (error) {
       console.log(error);
     }

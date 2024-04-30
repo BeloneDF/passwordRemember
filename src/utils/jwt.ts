@@ -1,4 +1,3 @@
-import bearer from "@elysiajs/bearer";
 import { jwt } from "@elysiajs/jwt";
 import { env } from "../env";
 

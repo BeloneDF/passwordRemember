@@ -1,6 +1,8 @@
+import { env } from "../../env";
 import CustomError from "../../hooks/error";
 import { UserSchema, type User } from "../../types/user";
 import { prisma } from "./../../db/prisma";
+import { jwt } from "@elysiajs/jwt";
 
 export async function GetUser() {
   try {
@@ -8,6 +10,15 @@ export async function GetUser() {
     return Response.json({ data: users });
   } catch (e) {
     return CustomError(`Erro ao buscar usuários: ${e} `);
+  }
+}
+
+export async function GetUserById(id: string) {
+  try {
+    const user = await prisma.user.findFirst({ where: { id: id } });
+    return Response.json({ user });
+  } catch (error) {
+    return CustomError(`Erro ao buscar usuários: ${error} `);
   }
 }
 
@@ -85,43 +96,4 @@ export async function AddUser(data: User) {
       };
     }
   }
-}
-
-export async function Login(body: User) {
-  const { email, password } = body;
-
-  if (!email || typeof email !== "string") {
-    return new Response("Invalid email", {
-      status: 400,
-    });
-  }
-  if (!password || typeof password !== "string") {
-    return new Response("invalid password", {
-      status: 400,
-    });
-  }
-  const user = await prisma.user.findFirst({ where: { email } });
-
-  if (!user) {
-    return new Response("Invalid email or password", {
-      status: 400,
-    });
-  }
-
-  const validPassword = await Bun.password.verify(
-    body.password,
-    user.password,
-    "argon2id"
-  );
-
-  if (!validPassword) {
-    return new Response("Invalid email or password", {
-      status: 400,
-    });
-  }
-
-  return Response.json({
-    message: "Logou com sucesso!",
-    status: 200,
-  });
 }

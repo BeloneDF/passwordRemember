@@ -9,4 +9,12 @@ export const PasswordRoutes = (app: Elysia) => {
   app.get("/passwords", () => {
     return Controller.GetPasswords();
   });
+
+  app.get("/passwordsByUser/:id", ({ params }: { params: { id: string } }) => {
+    try {
+      return Controller.GetPasswordsByUserId(params.id);
+    } catch (error) {
+      console.log(error);
+    }
+  });
 };

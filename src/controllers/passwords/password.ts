@@ -32,3 +32,16 @@ export async function GetPasswords() {
     });
   }
 }
+
+export async function GetPasswordsByUserId(id: string) {
+  try {
+    const data = await prisma.passwords.findMany({
+      where: {
+        userId: id,
+      },
+    });
+    return Response.json(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
