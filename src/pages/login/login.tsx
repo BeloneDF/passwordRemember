@@ -3,7 +3,6 @@ import axios from "axios";
 import CardLogin from "../../components/cardLogin";
 import { TextInput } from "../../components/input/text-input/input.tsx";
 import { LargeButton } from "../../components/largeButton/largeButton.styled.ts";
-
 interface User {
   username: string;
   email: string;
@@ -24,6 +23,7 @@ function App() {
         password: user.password,
       });
       alert(response.data.message);
+      localStorage.setItem("acess_token", response.data.acess_token);
       window.location.href = "/home";
     } catch (error) {
       console.error(error);
@@ -32,7 +32,7 @@ function App() {
 
   return (
     <CardLogin title="Login ou Registre-se">
-      <TextInput
+      <TextInput 
         data-bs-theme="dark"
         placeholder="Email"
         value={user.email}

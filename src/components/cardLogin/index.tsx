@@ -12,7 +12,7 @@ function CardLogin({ title, children }: Card) {
         bg="light"
         key="light"
         text="dark"
-        style={{ width: "20%", height: "40%" }}
+        style={{ width: "30%", height: "45%" }}
         className="mb-2"
       >
         <Card.Body>

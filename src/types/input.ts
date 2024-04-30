@@ -11,7 +11,7 @@ export interface InputProps {
   style?: React.CSSProperties;
   required?: boolean;
   ref?: React.LegacyRef<HTMLInputElement> | undefined;
-  label: string;
+  label?: string;
 }
 
 export interface TextAreaProps {
