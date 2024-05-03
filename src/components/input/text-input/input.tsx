@@ -14,6 +14,7 @@ export const TextInput: React.FC<InputProps> = ({
   required,
   ref,
   label,
+  disabled,
 }) => {
   const result = InputSchema.safeParse({
     placeholder,
@@ -27,6 +28,7 @@ export const TextInput: React.FC<InputProps> = ({
     required,
     ref,
     label,
+    disabled,
   });
 
   if (!result.success) {
@@ -48,6 +50,7 @@ export const TextInput: React.FC<InputProps> = ({
         required={required}
         autoComplete="off"
         ref={ref}
+        disabled={disabled}
       />
     </S.Container>
   );

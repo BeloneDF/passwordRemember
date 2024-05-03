@@ -1,7 +1,7 @@
-import { Passwords } from "../../types/passwords";
-import Loading from "../loading/loading";
-import PasswordCard from "../passwordCard/passwordCard";
-import * as S from "./filterList.styled";
+import { Passwords } from '../../types/passwords';
+import Loading from '../loading/loading';
+import PasswordCard from '../passwordCard/passwordCard';
+import * as S from './filterList.styled';
 
 interface FilterListRepo {
   loading: boolean;
@@ -15,15 +15,15 @@ function FilterList({ loading, filteredPasswords, passwords }: FilterListRepo) {
       {loading ? (
         <Loading />
       ) : filteredPasswords.length > 0 ? (
-        filteredPasswords.map((pass) => {
+        filteredPasswords.map(pass => {
           return <PasswordCard key={pass.id} pass={pass} />;
         })
       ) : passwords.length > 0 ? (
-        passwords.map((pass) => {
+        passwords.map(pass => {
           return <PasswordCard key={pass.id} pass={pass} />;
         })
       ) : (
-        <p style={{ color: "black" }}>voce nao tem senhas cadastradas</p>
+        <p style={{ color: 'black' }}>voce nao tem senhas cadastradas</p>
       )}
     </S.Container>
   );

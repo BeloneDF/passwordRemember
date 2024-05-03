@@ -12,6 +12,7 @@ export interface InputProps {
   required?: boolean;
   ref?: React.LegacyRef<HTMLInputElement> | undefined;
   label?: string;
+  disabled?: boolean;
 }
 
 export interface TextAreaProps {
