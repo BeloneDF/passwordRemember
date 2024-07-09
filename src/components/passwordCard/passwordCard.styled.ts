@@ -110,3 +110,14 @@ export const LoginDiv = styled.div`
   font-weight: 500;
   gap: 10px;
 `;
+
+export const Excluir = styled.section`
+  width: 100%;
+  color: #a50f34;
+  align-items: center;
+  cursor: pointer;
+
+  :hover {
+    color: black;
+  }
+`;
