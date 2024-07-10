@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import * as Controller from "../controllers/user/user";
 import { type User } from "../types/user";
-import { Auth } from "../middlewares/auth";
+
 export const UserRoutes = (app: Elysia) => {
   app.post("/user", ({ body }: { body: User }) => {
     try {

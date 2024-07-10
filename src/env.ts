@@ -5,6 +5,7 @@ const envSchema = z.object({
   PORT: z.string(),
   DATABASE_URL: z.string().url(),
   JWT_SECRETS: z.string(),
+  JWT_SECRETS_PASSWORD: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

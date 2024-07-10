@@ -58,6 +58,7 @@ export async function PutUser({ id, body }: { id: string; body: User }) {
 
 export async function AddUser(data: User) {
   const result = UserSchema.safeParse({ data });
+  console.log(data);
   const { password, email, ...userData } = data; // Extrai a senha do objeto data
 
   const hashedPassword: string = await Bun.password.hash(
@@ -68,7 +69,7 @@ export async function AddUser(data: User) {
   const hasAccount = await prisma.user.findFirst({ where: { email } });
 
   if (!result.success) {
-    CustomError("Erro ao adicionar usuário!");
+    throw CustomError("Erro ao adicionar usuário!");
   } else {
     try {
       if (hasAccount && hasAccount.email && hasAccount.email.length > 1) {

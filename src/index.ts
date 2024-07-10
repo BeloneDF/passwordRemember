@@ -15,9 +15,10 @@ function runServer() {
     {
       beforeHandle: ({ headers }) => {
         const authToken = headers.authorization;
+        console.log(headers)
 
         if (!authToken) {
-          return new Response("Auth token does'nt provided");
+          return new Response("Auth token doesn't provided", { status: 401 });
         }
 
         const [, token] = authToken.split(" ");
@@ -29,9 +30,9 @@ function runServer() {
           const decoded = verify(token, env.JWT_SECRETS);
           return;
         } catch (err: any) {
-          return {
-            message: "Invalid Token",
-          };
+          return new Response(JSON.stringify({ message: "Invalid Token" }), {
+            status: 403,
+          });
         }
       },
     },
