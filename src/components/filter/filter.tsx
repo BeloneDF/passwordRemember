@@ -1,16 +1,17 @@
-import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
 import newPassword from "../../function/passwordGenerator";
-import { useFilter } from "../../hooks/useFilter";
-import useOpenModal from "../../hooks/useOpenModa";
-import { UserContext } from "../../hooks/userContext";
-import { Passwords } from "../../types/passwords";
+import { useFilter } from "@hooks/useFilter";
+import useOpenModal from "@hooks/useOpenModal";
+import { UserContext } from "@hooks/userContext";
+import { Passwords } from "@types/passwords";
 import FilterList from "../filterList/filterList";
 import HeaderList from "../header/headerList";
 import { TextInput } from "../input/text-input/input";
 import Modal from "../modal/modal";
 import * as S from "./filter.styled";
 import { LargeButtonComponent } from "../largeButton/largeButton";
+import { selectMethod } from "../../api/methods";
+import { jwtDecode } from "jwt-decode";
 
 function Filter() {
   const [passwords, setPasswords] = useState<Passwords[]>([]);
@@ -20,13 +21,17 @@ function Filter() {
   const [checked, setChecked] = useState(false);
   const userContext = useContext(UserContext);
 
+  interface MyJwtPayload {
+    data: Passwords[];
+  }
+
   if (!userContext) {
     throw new Error("UserContext must be used within a UserProvider");
   }
 
   const { user } = userContext;
 
-  function getBase64(file) {
+  function getBase64(file: File) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -47,19 +52,9 @@ function Filter() {
   });
 
   const getPasswords = useCallback(async () => {
-    //const token = localStorage.getItem('acess_token');
     try {
       const response = await selectMethod("get", `passwordsByUser/${user?.id}`);
-      // const response = await axios.get(
-      //   `http://localhost:3001/passwordsByUser/${user?.id}`,
-      //   {
-      //     headers: {
-      //       Authorization: 'Bearer ' + token,
-      //     },
-      //   },
-      // );
-      setPasswords(response.data);
-      console.log("Responsa da req: ", response.data);
+      setPasswords(jwtDecode<MyJwtPayload>(response.data.token).data);
       setLoading(false);
       return;
     } catch (error) {
@@ -69,28 +64,20 @@ function Filter() {
 
   const addPassword = useCallback(async () => {
     if (!user?.id) {
-      console.error("User ID is not available");
+      console.error("User não encontrado!");
       return;
     }
-
-    const token = localStorage.getItem("acess_token");
     const passwordWithUserId = {
       ...password,
       userId: user.id,
     };
-    console.log(passwordWithUserId);
     try {
-      const response = await axios.post(
-        `http://localhost:3001/password`,
-        passwordWithUserId,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        },
+      const response = await selectMethod(
+        "post",
+        "password",
+        passwordWithUserId
       );
       setPasswords(response.data);
-      console.log("Resposta da req: ", response.data);
       setLoading(false);
       return;
     } catch (error) {
@@ -103,24 +90,27 @@ function Filter() {
     return;
   }, [getPasswords]);
 
-  useEffect(() => {
-    console.log(password.image);
-  }, [password.image]);
   const generetedPassword = newPassword();
 
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const base64 = await getBase64(file);
-      setPassword({ ...password, image: base64 });
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      if (file) {
+        const base64 = (await getBase64(file)) as string;
+        setPassword({ ...password, image: base64 });
+      }
     }
   };
 
-  const handle2FAFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const base64 = await getBase64(file);
-      setPassword({ ...password, image_verification_software: base64 });
+  const handle2FAFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      if (file) {
+        const base64 = (await getBase64(file)) as string;
+        setPassword({ ...password, image_verification_software: base64 });
+      }
     }
   };
 
@@ -157,7 +147,6 @@ function Filter() {
         />
         <input
           id="image"
-          label="Imagem do site"
           placeholder=""
           onChange={handleFileChange}
           type="file"
@@ -201,7 +190,6 @@ function Filter() {
             />
             <input
               id="imagem2fa"
-              label="Imagem do software de 2fa"
               placeholder=""
               onChange={handle2FAFileChange}
               type="file"

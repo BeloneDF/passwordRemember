@@ -6,7 +6,6 @@ const api = axios.create({
     Authorization: "Bearer " + localStorage.getItem("acess_token"),
     Accept: "*/*",
     "Content-Type": "application/json",
-    "Accept-Encoding": "gzip, deflate, br",
   },
 });
 
