@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.section`
   display: flex;
@@ -20,13 +20,13 @@ export const Container = styled.section`
 export const Content = styled.div`
   border-radius: 10px;
   width: 50%;
-  height: 50%;
+  height: 70%;
   background-color: white;
   padding: 20px;
   display: flex;
-  justify-content: start;
+  justify-content: space-evenly;
   flex-direction: column;
-  gap: 10px;
+  overflow-y: auto;
 `;
 
 export const ButtonDiv = styled.div`

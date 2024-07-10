@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export interface Passwords {
   id?: string;
@@ -9,7 +9,7 @@ export interface Passwords {
   verificarion_software: string;
   image_verification_software: string;
   userId: string;
-  login: string
+  login: string;
 }
 
 export const passwordsSchema = z.object({

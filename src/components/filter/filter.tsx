@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useCallback, useContext, useEffect, useState } from "react";
 import newPassword from "../../function/passwordGenerator";
 import { useFilter } from "../../hooks/useFilter";
@@ -9,7 +10,7 @@ import HeaderList from "../header/headerList";
 import { TextInput } from "../input/text-input/input";
 import Modal from "../modal/modal";
 import * as S from "./filter.styled";
-import { selectMethod } from "../../api/methods";
+import { LargeButtonComponent } from "../largeButton/largeButton";
 
 function Filter() {
   const [passwords, setPasswords] = useState<Passwords[]>([]);
@@ -25,6 +26,15 @@ function Filter() {
 
   const { user } = userContext;
 
+  function getBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  }
+
   const [password, setPassword] = useState<Passwords>({
     password: "",
     name: "",
@@ -35,6 +45,7 @@ function Filter() {
     userId: "",
     login: "",
   });
+
   const getPasswords = useCallback(async () => {
     //const token = localStorage.getItem('acess_token');
     try {
@@ -56,12 +67,62 @@ function Filter() {
     }
   }, [user]);
 
+  const addPassword = useCallback(async () => {
+    if (!user?.id) {
+      console.error("User ID is not available");
+      return;
+    }
+
+    const token = localStorage.getItem("acess_token");
+    const passwordWithUserId = {
+      ...password,
+      userId: user.id,
+    };
+    console.log(passwordWithUserId);
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/password`,
+        passwordWithUserId,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        },
+      );
+      setPasswords(response.data);
+      console.log("Resposta da req: ", response.data);
+      setLoading(false);
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  }, [user, password]);
+
   useEffect(() => {
     getPasswords();
     return;
   }, [getPasswords]);
 
+  useEffect(() => {
+    console.log(password.image);
+  }, [password.image]);
   const generetedPassword = newPassword();
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const base64 = await getBase64(file);
+      setPassword({ ...password, image: base64 });
+    }
+  };
+
+  const handle2FAFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const base64 = await getBase64(file);
+      setPassword({ ...password, image_verification_software: base64 });
+    }
+  };
 
   return (
     <S.Container>
@@ -73,6 +134,7 @@ function Filter() {
             onChange={(e) => setChecked(e.target.checked)}
             type="checkbox"
           />
+          Indisponível no momento
         </div>
         <TextInput
           id="password"
@@ -93,22 +155,62 @@ function Filter() {
           onChange={(e) => setPassword({ ...password, name: e.target.value })}
           type="text"
         />
-        <TextInput
-          id="name"
-          value={password.image}
+        <input
+          id="image"
           label="Imagem do site"
-          placeholder="d"
-          onChange={(e) => setPassword({ ...password, image: e.target.value })}
-          type="text"
+          placeholder=""
+          onChange={handleFileChange}
+          type="file"
         />
         <TextInput
-          id="name"
-          value={password.name}
-          label="Site da sua senha"
-          placeholder="Digite o site da sua senha..."
-          onChange={(e) => setPassword({ ...password, name: e.target.value })}
+          id="login"
+          value={password.login}
+          label="Login da sua senha"
+          placeholder="Digite o Login da sua senha..."
+          onChange={(e) => setPassword({ ...password, login: e.target.value })}
           type="text"
         />
+        <div>
+          <label>2FA?</label>
+          <input
+            name="2faCheck"
+            id="2faCheck"
+            onChange={(e) =>
+              setPassword({
+                ...password,
+                second_verification: e.target.checked,
+              })
+            }
+            type="checkbox"
+          />
+        </div>
+        {password.second_verification && (
+          <>
+            <TextInput
+              id="secondVerificationSoftware"
+              value={password.verificarion_software}
+              label="Software de 2 fatores"
+              placeholder="Digite o software de autenticação..."
+              onChange={(e) =>
+                setPassword({
+                  ...password,
+                  verificarion_software: e.target.value,
+                })
+              }
+              type="text"
+            />
+            <input
+              id="imagem2fa"
+              label="Imagem do software de 2fa"
+              placeholder=""
+              onChange={handle2FAFileChange}
+              type="file"
+            />
+          </>
+        )}
+        <LargeButtonComponent onClick={() => addPassword()} id="btnAdd">
+          Salvar senha
+        </LargeButtonComponent>
       </Modal>
       <HeaderList
         setSearch={setSearch}

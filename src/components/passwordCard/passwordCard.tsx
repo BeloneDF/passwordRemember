@@ -1,6 +1,7 @@
 import { ReactNode } from "react";
 import { Passwords } from "../../types/passwords";
 import * as S from "./passwordCard.styled";
+import axios from "axios";
 
 interface PasswordCardProps {
   pass: Passwords;
@@ -9,6 +10,24 @@ interface PasswordCardProps {
 
 function PasswordCard({ pass }: PasswordCardProps) {
   const maskedPass = pass.password.replace(/./g, "•");
+
+  async function deletePassword() {
+    const token = localStorage.getItem("acess_token");
+    try {
+      const response = await axios.delete(
+        `http://localhost:3001/password/${pass.id}`,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
+        },
+      );
+      console.log("Resposta da req: ", response.data);
+      return;
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   function copyToClipboard(type: string) {
     if (type === "password") {
@@ -23,7 +42,7 @@ function PasswordCard({ pass }: PasswordCardProps) {
   return (
     <S.Container>
       <S.ContentMaster>
-        <S.Image src={`data:image/jpeg;base64,${pass.image}`} />
+        <S.Image src={pass.image} />
         <S.InfoContainer>
           <S.PasswordContainer>
             <S.Name>{pass.name}</S.Name>
@@ -51,13 +70,12 @@ function PasswordCard({ pass }: PasswordCardProps) {
                 pass.second_verification === true ? "green" : "red"
               }
             />
-            <S.ImageSecondVerification
-              src={`data:image/jpeg;base64,${pass.image_verification_software}`}
-            />
+            <S.ImageSecondVerification src={pass.image_verification_software} />
           </S.SecondVerification>
         </S.InfoContainer>
         <S.OtherContainer />
       </S.ContentMaster>
+      <S.Excluir onClick={() => deletePassword()}>Excluir</S.Excluir>
     </S.Container>
   );
 }
