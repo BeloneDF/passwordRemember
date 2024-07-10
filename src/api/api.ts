@@ -10,9 +10,4 @@ const api = axios.create({
   },
 });
 
-const cancelToken = axios.CancelToken.source();
-
-export default {
-  api,
-  cancelToken,
-};
+export default api;
