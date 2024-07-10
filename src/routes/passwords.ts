@@ -14,7 +14,7 @@ export const PasswordRoutes = (app: Elysia) => {
     try {
       return Controller.GetPasswordsByUserId(params.id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   });
 };

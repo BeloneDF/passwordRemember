@@ -17,7 +17,6 @@ export async function Auth(body: User) {
   }
 
   const user = await prisma.user.findFirst({ where: { email: body.email } });
-  console.log(user, body)
   if (!user || user == null) {
     return Response.json({
       message: "Credenciais Inválidas",

@@ -15,33 +15,32 @@ export const UserRoutes = (app: Elysia) => {
     try {
       return Controller.GetUser();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   });
   app.get("/users/:id", ({ params }: { params: { id: string } }) => {
     try {
       return Controller.GetUserById(params.id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   });
   app.delete("/users/:id", ({ params }: { params: { id: string } }) => {
-    console.log(params);
+    console.error(params);
     try {
       return Controller.DeleteUser(params.id);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   });
 
   app.put(
     "/users/:id",
     ({ params, body }: { params: { id: string }; body: User }) => {
-      console.log("route: ", body);
       try {
         return Controller.PutUser({ id: params.id, body });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   );

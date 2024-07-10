@@ -58,7 +58,6 @@ export async function PutUser({ id, body }: { id: string; body: User }) {
 
 export async function AddUser(data: User) {
   const result = UserSchema.safeParse({ data });
-  console.log(data);
   const { password, email, ...userData } = data; // Extrai a senha do objeto data
 
   const hashedPassword: string = await Bun.password.hash(

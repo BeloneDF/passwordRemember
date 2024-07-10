@@ -5,7 +5,6 @@ import * as jwt from "jsonwebtoken";
 
 export async function addPassword(data: Password) {
   const result = PasswordSchema.safeParse(data);
-  console.log(data.password);
   if (!result) {
     return new Response("erro ao inserir a senha", {
       status: 205,
@@ -45,6 +44,6 @@ export async function GetPasswordsByUserId(id: string) {
     const token = jwt.sign({ data }, env.JWT_SECRETS_PASSWORD);
     return Response.json({ token });
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 }
