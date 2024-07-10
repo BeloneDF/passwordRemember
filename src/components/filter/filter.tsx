@@ -20,6 +20,16 @@ function Filter() {
   const { open, toggleModal } = useOpenModal();
   const [checked, setChecked] = useState(false);
   const userContext = useContext(UserContext);
+  const [password, setPassword] = useState<Passwords>({
+    password: "",
+    name: "",
+    image: "",
+    second_verification: false,
+    verificarion_software: "",
+    image_verification_software: "",
+    userId: "",
+    login: "",
+  });
 
   interface MyJwtPayload {
     data: Passwords[];
@@ -40,17 +50,6 @@ function Filter() {
     });
   }
 
-  const [password, setPassword] = useState<Passwords>({
-    password: "",
-    name: "",
-    image: "",
-    second_verification: false,
-    verificarion_software: "",
-    image_verification_software: "",
-    userId: "",
-    login: "",
-  });
-
   const getPasswords = useCallback(async () => {
     try {
       const response = await selectMethod("get", `passwordsByUser/${user?.id}`);
@@ -58,7 +57,7 @@ function Filter() {
       setLoading(false);
       return;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [user]);
 
@@ -81,7 +80,7 @@ function Filter() {
       setLoading(false);
       return;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [user, password]);
 
