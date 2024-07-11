@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { ReactNode } from "react";
 
 export interface InputProps {
   placeholder?: string;
@@ -10,7 +10,7 @@ export interface InputProps {
   className?: string;
   style?: React.CSSProperties;
   required?: boolean;
-  ref?: React.LegacyRef<HTMLInputElement> | undefined;
+  ref?: React.Ref<HTMLInputElement>;
   label?: string;
   disabled?: boolean;
 }

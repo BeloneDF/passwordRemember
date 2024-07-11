@@ -1,60 +1,64 @@
-import { InputSchema, SelectSchema } from '../../../schemas/input.ts';
-import { InputProps, SelectProps } from '../../../types/input.ts';
-import * as S from './input.styled.ts';
+import { InputSchema, SelectSchema } from "../../../schemas/input.ts";
+import { InputProps, SelectProps } from "../../../types/input.ts";
+import * as S from "./input.styled.ts";
+import React, { forwardRef } from "react";
 
-export const TextInput: React.FC<InputProps> = ({
-  placeholder,
-  value,
-  onChange,
-  style,
-  type,
-  name,
-  id,
-  className,
-  required,
-  ref,
-  label,
-  disabled,
-}) => {
-  const result = InputSchema.safeParse({
-    placeholder,
-    value,
-    onChange,
-    style,
-    type,
-    name,
-    id,
-    className,
-    required,
-    ref,
-    label,
-    disabled,
-  });
+export const TextInput = forwardRef<HTMLInputElement, InputProps>(
+  (props, ref) => {
+    const {
+      placeholder,
+      value,
+      onChange,
+      style,
+      type,
+      name,
+      id,
+      className,
+      required,
+      label,
+      disabled,
+    } = props;
 
-  if (!result.success) {
-    console.error(result.error);
-    return null;
+    const result = InputSchema.safeParse({
+      placeholder,
+      value,
+      onChange,
+      style,
+      type,
+      name,
+      id,
+      className,
+      required,
+      label,
+      disabled,
+    });
+
+    if (!result.success) {
+      console.error(result.error);
+      return null;
+    }
+
+    return (
+      <S.Container>
+        {label && label.length > 0 ? <div>{label}</div> : null}
+        <S.TextInput
+          placeholder={placeholder}
+          value={value}
+          onChange={onChange}
+          style={style}
+          type={type}
+          name={name}
+          id={id}
+          className={className}
+          required={required}
+          autoComplete="off"
+          ref={ref}
+          disabled={disabled}
+        />
+      </S.Container>
+    );
   }
-  return (
-    <S.Container>
-      {label && label.length > 0 ? <div> {label}</div> : null}
-      <S.TextInput
-        placeholder={placeholder}
-        value={value}
-        onChange={onChange}
-        style={style}
-        type={type}
-        name={name}
-        id={id}
-        className={className}
-        required={required}
-        autoComplete="off"
-        ref={ref}
-        disabled={disabled}
-      />
-    </S.Container>
-  );
-};
+);
 
 export const SelectInput: React.FC<SelectProps> = ({
   value,

@@ -1,14 +1,14 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const InputSchema = z.object({
   placeholder: z.string().optional(),
-  value: z.union([z.string(), z.number()]),
-  onChange: z.function().args(z.any()).returns(z.void()),
+  value: z.union([z.string(), z.number()]).optional(),
+  onChange: z.function().args(z.any()).returns(z.void()).optional(),
   type: z.union([
-    z.literal('text'),
-    z.literal('password'),
-    z.literal('email'),
-    z.literal('number'),
+    z.literal("text"),
+    z.literal("password"),
+    z.literal("email"),
+    z.literal("number"),
   ]),
   name: z.string().optional(),
   id: z.string(),

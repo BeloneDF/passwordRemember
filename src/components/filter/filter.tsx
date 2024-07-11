@@ -13,6 +13,9 @@ import { LargeButtonComponent } from "../largeButton/largeButton";
 import { selectMethod } from "../../api/methods";
 import { jwtDecode } from "jwt-decode";
 
+interface MyJwtPayload {
+  data: Passwords[];
+}
 function Filter() {
   const [passwords, setPasswords] = useState<Passwords[]>([]);
   const [loading, setLoading] = useState(true);
@@ -30,10 +33,6 @@ function Filter() {
     userId: "",
     login: "",
   });
-
-  interface MyJwtPayload {
-    data: Passwords[];
-  }
 
   if (!userContext) {
     throw new Error("UserContext must be used within a UserProvider");
@@ -91,26 +90,28 @@ function Filter() {
 
   const generetedPassword = newPassword();
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      const file = e.target.files[0];
-      if (file) {
-        const base64 = (await getBase64(file)) as string;
-        setPassword({ ...password, image: base64 });
-      }
-    }
-  };
-
-  const handle2FAFileChange = async (
-    e: React.ChangeEvent<HTMLInputElement>
+  const handleFileChange = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: "image" | "image_verification_software"
   ) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       if (file) {
         const base64 = (await getBase64(file)) as string;
-        setPassword({ ...password, image_verification_software: base64 });
+        setPassword((prevPassword) => ({
+          ...prevPassword,
+          [field]: base64,
+        }));
       }
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value, checked, type } = e.target;
+    setPassword((prevPassword) => ({
+      ...prevPassword,
+      [id]: type === "checkbox" ? checked : value,
+    }));
   };
 
   return (
@@ -118,11 +119,7 @@ function Filter() {
       <Modal open={open} toggleModal={toggleModal}>
         <div>
           <label> Gerar senha</label>
-          <input
-            disabled
-            onChange={(e) => setChecked(e.target.checked)}
-            type="checkbox"
-          />
+          <input disabled onChange={handleInputChange} type="checkbox" />
           Indisponível no momento
         </div>
         <TextInput
@@ -131,9 +128,7 @@ function Filter() {
           label="Digite a sua senha"
           placeholder="Digite sua senha..."
           disabled={checked ? true : false}
-          onChange={(e) =>
-            setPassword({ ...password, password: e.target.value })
-          }
+          onChange={handleInputChange}
           type="password"
         />
         <TextInput
@@ -141,13 +136,13 @@ function Filter() {
           value={password.name}
           label="Site da sua senha"
           placeholder="Digite o site da sua senha..."
-          onChange={(e) => setPassword({ ...password, name: e.target.value })}
+          onChange={handleInputChange}
           type="text"
         />
         <input
           id="image"
           placeholder=""
-          onChange={handleFileChange}
+          onChange={(e) => handleFileChange(e, "image")}
           type="file"
         />
         <TextInput
@@ -155,42 +150,34 @@ function Filter() {
           value={password.login}
           label="Login da sua senha"
           placeholder="Digite o Login da sua senha..."
-          onChange={(e) => setPassword({ ...password, login: e.target.value })}
+          onChange={handleInputChange}
           type="text"
         />
         <div>
           <label>2FA?</label>
           <input
-            name="2faCheck"
-            id="2faCheck"
-            onChange={(e) =>
-              setPassword({
-                ...password,
-                second_verification: e.target.checked,
-              })
-            }
+            name="second_verification"
+            id="second_verification"
+            onChange={handleInputChange}
             type="checkbox"
           />
         </div>
         {password.second_verification && (
           <>
             <TextInput
-              id="secondVerificationSoftware"
+              id="verificarion_software"
               value={password.verificarion_software}
               label="Software de 2 fatores"
               placeholder="Digite o software de autenticação..."
-              onChange={(e) =>
-                setPassword({
-                  ...password,
-                  verificarion_software: e.target.value,
-                })
-              }
+              onChange={handleInputChange}
               type="text"
             />
             <input
               id="imagem2fa"
               placeholder=""
-              onChange={handle2FAFileChange}
+              onChange={(e) =>
+                handleFileChange(e, "image_verification_software")
+              }
               type="file"
             />
           </>

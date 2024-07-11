@@ -50,9 +50,10 @@ function App() {
         id="password"
         label="Password"
       />
+      <br />
       <LargeButton onClick={() => login()}>Login</LargeButton>
       <span style={{ fontSize: 12, fontWeight: "bold" }}>
-        Não possui conta? <a href="">Cadastre-se</a>
+        Não possui conta? <a href="/Signup">Cadastre-se</a>
       </span>
     </CardLogin>
   );

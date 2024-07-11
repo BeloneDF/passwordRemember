@@ -1,7 +1,8 @@
 import { ReactNode } from "react";
 import { Passwords } from "../../types/passwords";
 import * as S from "./passwordCard.styled";
-import axios from "axios";
+
+import { selectMethod } from "../../api/methods";
 
 interface PasswordCardProps {
   pass: Passwords;
@@ -12,16 +13,8 @@ function PasswordCard({ pass }: PasswordCardProps) {
   const maskedPass = pass.password.replace(/./g, "•");
 
   async function deletePassword() {
-    const token = localStorage.getItem("acess_token");
     try {
-      const response = await axios.delete(
-        `http://localhost:3001/password/${pass.id}`,
-        {
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-        },
-      );
+      const response = await selectMethod("delete", `passwords/${pass.id}`);
       console.log("Resposta da req: ", response.data);
       return;
     } catch (error) {
