@@ -2,7 +2,7 @@ import { Elysia, error } from "elysia";
 import { env } from "./env";
 import connectToDatabase from "./db/connection";
 import { cors } from "@elysiajs/cors";
-import { Routes } from "./routes";
+import { Routes, NormalRoutes } from "./routes";
 import { swagger } from "@elysiajs/swagger";
 import { AuthRoutes } from "./routes/auth/auth.routes";
 import { verify } from "jsonwebtoken";
@@ -37,6 +37,7 @@ function runServer() {
     },
     (app) => app.use(Routes())
   );
+  app.use(NormalRoutes());
 
   app.use(
     swagger({

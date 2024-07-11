@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import * as Controller from "../controllers/user/user";
 import { type User } from "../types/user";
 
-export const UserRoutes = (app: Elysia) => {
+export const NormalUser = (app: Elysia) => {
   app.post("/user", ({ body }: { body: User }) => {
     try {
       return Controller.AddUser(body);
@@ -10,7 +10,9 @@ export const UserRoutes = (app: Elysia) => {
       console.error(error);
     }
   });
+};
 
+export const PrivateUser = (app: Elysia) => {
   app.get("/users", () => {
     try {
       return Controller.GetUser();

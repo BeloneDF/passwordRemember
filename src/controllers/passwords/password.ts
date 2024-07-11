@@ -47,3 +47,17 @@ export async function GetPasswordsByUserId(id: string) {
     console.error(error);
   }
 }
+
+export async function DeletePassword(id: string) {
+  console.log(id);
+  try {
+    await prisma.passwords.delete({ where: { id } });
+    return new Response("Senha deletada com sucesso!", {
+      status: 200,
+    });
+  } catch (error) {
+    return new Response("Erro ao deletar senha", {
+      status: 405,
+    });
+  }
+}

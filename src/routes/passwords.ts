@@ -17,4 +17,12 @@ export const PasswordRoutes = (app: Elysia) => {
       console.error(error);
     }
   });
+
+  app.delete("/passwords/:id", ({ params }: { params: { id: string } }) => {
+    try {
+      return Controller.DeletePassword(params.id);
+    } catch (error) {
+      console.error(error);
+    }
+  });
 };
