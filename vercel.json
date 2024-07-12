@@ -1,9 +1,14 @@
 {
     "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/index.html",
-        "status": 200
-      }
+        {
+            "src": "/(.*).(js|css|png|jpg|jpeg|gif|ico|svg)$",
+            "dest": "/$1.$2",
+            "status": 200
+        },
+        {
+            "src": "/(.*)",
+            "dest": "/index.html",
+            "status": 200
+        }
     ]
-  }
+}
