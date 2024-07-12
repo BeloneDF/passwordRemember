@@ -12,7 +12,9 @@ model User {
     username  String
     email     String
     password  String
+    verified  Boolean
     passwords Passwords[]
+    photo     String
 }
 
 model Passwords {

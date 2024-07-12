@@ -10,6 +10,14 @@ export const NormalUser = (app: Elysia) => {
       console.error(error);
     }
   });
+
+  app.get("/verify/user/:id", ({ params }: { params: { id: string } }) => {
+    try {
+      return Controller.VerifyUser(params.id);
+    } catch (error) {
+      console.error(error);
+    }
+  });
 };
 
 export const PrivateUser = (app: Elysia) => {

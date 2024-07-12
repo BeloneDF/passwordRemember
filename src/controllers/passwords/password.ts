@@ -11,6 +11,11 @@ export async function addPassword(data: Password) {
     });
   }
 
+  const passwordEncoded = btoa(data.password);
+  const loginEncoded = btoa(data.login);
+  data.password = passwordEncoded;
+  data.login = loginEncoded;
+
   try {
     await prisma.passwords.create({ data });
     return new Response("Senha adicionada com sucesso!", {
@@ -41,7 +46,16 @@ export async function GetPasswordsByUserId(id: string) {
         userId: id,
       },
     });
-    const token = jwt.sign({ data }, env.JWT_SECRETS_PASSWORD);
+    const token = jwt.sign(
+      {
+        data: data.map((item) => ({
+          ...item,
+          password: item.password ? atob(item.password) : "",
+          login: item.login ? atob(item.login) : "",
+        })),
+      },
+      env.JWT_SECRETS_PASSWORD
+    );
     return Response.json({ token });
   } catch (error) {
     console.error(error);

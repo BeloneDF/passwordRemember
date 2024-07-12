@@ -4,7 +4,6 @@ import type { User } from "../types/user";
 import jwt from "jsonwebtoken";
 
 export async function Auth(body: User) {
-  
   if (!body.email || typeof body.email !== "string") {
     return new Response("Invalid email", {
       status: 400,
@@ -18,9 +17,12 @@ export async function Auth(body: User) {
 
   const user = await prisma.user.findFirst({ where: { email: body.email } });
   if (!user || user == null) {
-    return Response.json({
-      message: "Credenciais Inválidas",
-    }, {status: 400});
+    return Response.json(
+      {
+        message: "Credenciais Inválidas",
+      },
+      { status: 400 }
+    );
   }
 
   const validPassword = await Bun.password.verify(
@@ -29,9 +31,21 @@ export async function Auth(body: User) {
     "argon2id"
   );
   if (!validPassword) {
-    return Response.json({
-      message: "Credenciais Inválidas",
-    }, {status: 400});
+    return Response.json(
+      {
+        message: "Credenciais Inválidas",
+      },
+      { status: 400 }
+    );
+  }
+
+  if (!user.verified) {
+    return Response.json(
+      {
+        message: "Conta não verificada",
+      },
+      { status: 400 }
+    );
   }
 
   const jwtToken = jwt.sign({ sub: String(user.id) }, env.JWT_SECRETS!, {
