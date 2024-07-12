@@ -15,18 +15,19 @@ function FilterList({ loading, filteredPasswords, passwords }: FilterListRepo) {
       {loading ? (
         <Loading />
       ) : filteredPasswords.length > 0 ? (
-        filteredPasswords.map(pass => {
-          return <PasswordCard key={pass.id} pass={pass} />;
-        })
+        filteredPasswords.map((pass) => (
+          <PasswordCard key={pass.id} pass={pass} />
+        ))
       ) : passwords.length > 0 ? (
-        passwords.map(pass => {
-          return <PasswordCard key={pass.id} pass={pass} />;
-        })
-      ) : (
-        <p style={{ color: 'black' }}>voce nao tem senhas cadastradas</p>
-      )}
+        passwords.map((pass) => (
+          <PasswordCard key={pass.id} pass={pass} />
+        ))
+      ) : null /* Remova a mensagem de "Você não tem senhas cadastradas" aqui */
+      }
     </S.Container>
   );
 }
+
+
 
 export default FilterList;

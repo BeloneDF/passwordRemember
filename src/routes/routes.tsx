@@ -3,6 +3,8 @@ import App from "../pages/login/login";
 //import Home from "../pages/home/home";
 import Signup from "../pages/signup/signup";
 import AuthRoute from "./authRoutes";
+import HeaderApp from "@components/header/headerApp/headerApp";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +26,7 @@ const router = createBrowserRouter([
     path: "/Home",
     element: (
       <>
+        <HeaderApp />
         <AuthRoute />
       </>
     ),

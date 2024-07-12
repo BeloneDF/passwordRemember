@@ -5,9 +5,11 @@ export const Container = styled.section`
   height: 85%;
   border-radius: 10px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   padding: 10px;
   gap: 30px;
-  align-items: center;
-  justify-content: center;
+  align-items: start;
+  justify-content: flex-start;
+  overflow-y: auto;
+  flex-wrap: wrap;
 `;

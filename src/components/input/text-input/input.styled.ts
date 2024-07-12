@@ -22,6 +22,12 @@ export const TextInput = styled.input`
     box-shadow: inset 0px 0px 10px gray;
     border: none;
   }
+
+  &:disabled {
+    background-color: #f5f5f5;
+    color: #a1a1a1;
+    border: none;
+  }
 `;
 
 export const SelectInput = styled.select`
@@ -51,7 +57,7 @@ export const SelectInput = styled.select`
 export const Container = styled.div`
   width: 100%;
   display: flex;
-   justify-content: flex-start;
+  justify-content: flex-start;
   padding: 10px;
   flex-direction: column;
   gap: 10px;
@@ -63,7 +69,7 @@ export const Container = styled.div`
     white-space: nowrap; /* Impede que o texto seja quebrado em várias linhas */
     overflow: hidden; /* Esconde o conteúdo além da largura especificada */
     text-overflow: ellipsis;
-    text-align: left
+    text-align: left;
   }
 `;
 

@@ -1,10 +1,14 @@
-import axios from 'axios';
-import { ReactNode, createContext, useEffect, useState } from 'react';
-import decodeToken from './decodeToken';
+import { ReactNode, createContext, useEffect, useState } from "react";
+import decodeToken from "./decodeToken";
+import { selectMethod } from "../api/methods";
 
-interface User {
+export type User = {
   id: string;
-}
+  username: string;
+  email: string;
+  password: string;
+  photo: string;
+};
 
 interface UserProviderProps {
   children: ReactNode;
@@ -20,22 +24,15 @@ const UserContext = createContext<
 
 const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const token = localStorage.getItem('acess_token') as string;
+  const token = localStorage.getItem("acess_token") as string;
   const decode = decodeToken(token);
 
   async function getUser() {
     try {
-      const response = await axios.get(
-        `http://localhost:3001/users/${decode.sub}`,
-        {
-          headers: {
-            Authorization: 'Bearer ' + token,
-          },
-        },
-      );
-      setUser(response.data.user); // Define o usuário diretamente, sem encapsulá-lo em um array
+      const response = await selectMethod("get", `users/${decode.sub}`);
+      setUser(response.data.user);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   useEffect(() => {

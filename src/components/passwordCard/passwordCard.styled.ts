@@ -2,41 +2,37 @@ import styled from "styled-components";
 import { FaRegCopy } from "react-icons/fa6";
 
 export const Container = styled.section`
-  width: 30%;
-  height: 20%;
+  width: 100%;
+  max-width: 400px;
   background-color: white;
-  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   color: gray;
   padding: 10px;
+  height: 150px;
+  border: 1px solid #f0f0f0;
 `;
 export const ContentMaster = styled.div`
-  height: 80%;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  gap: 10px;
+  height: 100%;
 `;
 
 export const Image = styled.img`
   height: 100%;
-  width: 25%;
+  width: 30%;
   border-radius: 10px;
   object-fit: contain;
 `;
 
 export const InfoContainer = styled.div`
-  height: 100%;
-  width: 55%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
   gap: 10px;
+  width: 70%;
 `;
 
 export const OtherContainer = styled.div`
-  height: 100%;
-  width: 10%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -47,30 +43,26 @@ export const Name = styled.div`
   font-size: 18px;
   text-transform: capitalize;
   font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 export const PasswordContainer = styled.div`
-  width: 100%;
   display: flex;
-  flex-direction: row;
-  gap: 20px;
+  gap: 10px;
   align-items: center;
-  text-align: center;
-  height: 25%;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 20%;
 `;
 
 export const ButtonCopyPassword = styled(FaRegCopy)`
-  background-color: transparent;
   width: 15px;
-  height: 30px;
+  height: 15px;
   color: gray;
-  align-items: center;
-  display: flex;
-  justify-content: center;
-  border: none;
   cursor: pointer;
 
   &:hover {
-    border: none;
     color: black;
   }
 `;
@@ -92,32 +84,44 @@ export const ImageSecondVerification = styled.img`
 `;
 
 export const SecondVerification = styled.div`
-  width: 100%;
-  height: 25%;
   display: flex;
-  flex-direction: row;
   align-items: center;
   gap: 10px;
 `;
 
 export const LoginDiv = styled.div`
-  font-size: 14px;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  text-align: center;
-  color: black;
-  font-weight: 500;
   gap: 10px;
+  align-items: center;
+  width: 100%;
+  max-width: 250px;
 `;
 
-export const Excluir = styled.section`
-  width: 100%;
+export const Login = styled.div`
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  width: 85%;
+`;
+
+export const Excluir = styled.div`
   color: #a50f34;
-  align-items: center;
   cursor: pointer;
 
   :hover {
     color: black;
+  }
+`;
+
+export const deleteButton = styled.button`
+  color: #a50f34;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+
+  :hover {
+    color: black;
+    outline: none;
   }
 `;

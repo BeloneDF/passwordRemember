@@ -3,7 +3,7 @@ import newPassword from "../../function/passwordGenerator";
 import { useFilter } from "@hooks/useFilter";
 import useOpenModal from "@hooks/useOpenModal";
 import { UserContext } from "@hooks/userContext";
-import { Passwords } from "@types/passwords";
+import { Passwords } from "../../types/passwords";
 import FilterList from "../filterList/filterList";
 import HeaderList from "../header/headerList";
 import { TextInput } from "../input/text-input/input";
@@ -12,17 +12,21 @@ import * as S from "./filter.styled";
 import { LargeButtonComponent } from "../largeButton/largeButton";
 import { selectMethod } from "../../api/methods";
 import { jwtDecode } from "jwt-decode";
+import CustomAlert from "@components/alert/alert";
 
 interface MyJwtPayload {
   data: Passwords[];
 }
+
 function Filter() {
   const [passwords, setPasswords] = useState<Passwords[]>([]);
   const [loading, setLoading] = useState(true);
   const { setSearch, filteredPasswords, search } = useFilter(passwords);
   const { open, toggleModal } = useOpenModal();
-  const [checked, setChecked] = useState(false);
+  const [checked] = useState(false);
   const userContext = useContext(UserContext);
+  const [alertMessage, setAlertMessage] = useState<string>("");
+
   const [password, setPassword] = useState<Passwords>({
     password: "",
     name: "",
@@ -37,7 +41,6 @@ function Filter() {
   if (!userContext) {
     throw new Error("UserContext must be used within a UserProvider");
   }
-
   const { user } = userContext;
 
   function getBase64(file: File) {
@@ -54,9 +57,9 @@ function Filter() {
       const response = await selectMethod("get", `passwordsByUser/${user?.id}`);
       setPasswords(jwtDecode<MyJwtPayload>(response.data.token).data);
       setLoading(false);
-      return;
     } catch (error) {
       console.error(error);
+      setLoading(false); // Garanta que setLoading seja definido em caso de erro também
     }
   }, [user]);
 
@@ -70,23 +73,31 @@ function Filter() {
       userId: user.id,
     };
     try {
-      const response = await selectMethod(
-        "post",
-        "password",
-        passwordWithUserId
-      );
-      setPasswords(response.data);
-      setLoading(false);
-      return;
+      await selectMethod("post", "password", passwordWithUserId);
+      setLoading(true);
+      setPassword({
+        password: "",
+        name: "",
+        image: "",
+        second_verification: false,
+        verificarion_software: "",
+        image_verification_software: "",
+        userId: "",
+        login: "",
+      });
+      toggleModal();
+      await getPasswords();
+      setAlertMessage("correct");
     } catch (error) {
+      setAlertMessage("error");
       console.error(error);
+      setLoading(false);
     }
-  }, [user, password]);
+  }, [user, password, getPasswords, toggleModal]);
 
   useEffect(() => {
-    getPasswords();
-    return;
-  }, [getPasswords]);
+    getPasswords(); // Chamada inicial ao montar o componente
+  }, [getPasswords]); // Certifique-se de usar getPasswords como dependência para reexecutar apenas quando ele mudar
 
   const generetedPassword = newPassword();
 
@@ -116,6 +127,14 @@ function Filter() {
 
   return (
     <S.Container>
+      {alertMessage === "" ? null : alertMessage === "correct" ? (
+        <CustomAlert
+          message={"Senha Adicionada com sucesso!"}
+          variant="success"
+        />
+      ) : (
+        <CustomAlert message={"Erro ao adicionar senha!"} variant="danger" />
+      )}
       <Modal open={open} toggleModal={toggleModal}>
         <div>
           <label> Gerar senha</label>

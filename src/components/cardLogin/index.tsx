@@ -9,13 +9,21 @@ function CardLogin({ title, children }: Card) {
   return (
     <>
       <Card
-        bg="light"
+        bg="white"
         key="light"
         text="dark"
-        style={{ width: "30%", height: "50%" }}
+        style={{ width: "30%", height: "60%", border: "none" }}
         className="mb-2"
       >
-        <Card.Body>
+        <Card.Body
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 10,
+            height: "100%",
+          }}
+        >
           <Card.Title style={{ textAlign: "center" }}>{title}</Card.Title>
           <S.Container>{children}</S.Container>
         </Card.Body>
