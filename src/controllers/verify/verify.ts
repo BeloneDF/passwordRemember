@@ -14,6 +14,6 @@ export async function VerifyEmail({
     from: "onboarding@resend.dev",
     to: "belonefraga1@hotmail.com",
     subject: "Verify your email",
-    text: `Clique aqui para verificar seu cadastro: http://localhost:3001/verify/user/${id}`,
+    text: `Clique aqui para verificar seu cadastro: https://passwordremember-production.up.railway.app/verify/user/${id}`,
   });
 }

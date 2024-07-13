@@ -58,10 +58,10 @@ export async function DeleteUser(id: string) {
 export async function PutUser({ id, body }: { id: string; body: User }) {
   const { password, email, ...userData } = body;
 
-  const hashedPassword: string = await Bun.password.hash(
-    body.password,
-    "argon2id"
-  );
+  let hashedPassword: string | undefined;
+  if (password) {
+    hashedPassword = await Bun.password.hash(password, "argon2id");
+  }
 
   const user = await prisma.user.findUnique({
     where: {
@@ -74,7 +74,7 @@ export async function PutUser({ id, body }: { id: string; body: User }) {
         where: { id },
         data: {
           ...userData,
-          password: hashedPassword,
+          ...(hashedPassword ? { password: hashedPassword } : {}),
           email: email,
         },
       });
