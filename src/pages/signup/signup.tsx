@@ -5,6 +5,7 @@ import { LargeButtonComponent } from "@components/largeButton/largeButton";
 import { selectMethod } from "../../api/methods";
 import Loading from "@components/loading/loading";
 import { Image } from "react-bootstrap";
+import CustomAlert from "@components/alert/alert";
 
 function Signup() {
   const usernameRef = useRef<HTMLInputElement>(null);
@@ -12,7 +13,7 @@ function Signup() {
   const passwordRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [imageSrc, setImageSrc] = useState("");
-
+  const [alertMessage, setAlertMessage] = useState<string>("");
   async function handleSubmit() {
     try {
       setLoading(true);
@@ -23,14 +24,15 @@ function Signup() {
         photo: imageSrc,
       });
       setLoading(false);
-      confirm(
-        "Você criou sua conta com sucesso! acesse o e-mail para validá-la."
-      );
+      setAlertMessage("correct");
       if (response.status === 200) {
-        window.location.href = "/";
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 1000);
       }
     } catch (error) {
       console.error(error);
+      setAlertMessage("error");
       setLoading(false);
     }
   }
@@ -113,6 +115,16 @@ function Signup() {
         <LargeButtonComponent id="btnenviar" onClick={handleSubmit}>
           Cadastrar
         </LargeButtonComponent>
+      )}
+      {alertMessage === "" ? null : alertMessage === "correct" ? (
+        <CustomAlert
+          message={
+            "Você criou sua conta com sucesso! acesse o e-mail para validá-la."
+          }
+          variant="success"
+        />
+      ) : (
+        <CustomAlert message={"Erro ao criar conta!"} variant="danger" />
       )}
     </CardLogin>
   );

@@ -6,7 +6,7 @@ export const TextInput = styled.input`
   width: 100%;
   height: 40px;
   background-color: #fff;
-  border: 1px solid #555;
+  border: 1px solid #f0f0f0;
   border-radius: 10px;
   align-items: center;
   display: flex;

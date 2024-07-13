@@ -3,6 +3,9 @@ import axios from "axios";
 import CardLogin from "../../components/cardLogin";
 import { TextInput } from "../../components/input/text-input/input.tsx";
 import { LargeButton } from "../../components/largeButton/largeButton.styled.ts";
+import CustomAlert from "@components/alert/alert";
+
+
 interface User {
   username: string;
   email: string;
@@ -10,6 +13,7 @@ interface User {
 }
 
 function App() {
+  const [alertMessage, setAlertMessage] = useState<string>("");
   const [user, setUser] = useState<User>({
     username: "",
     email: "",
@@ -22,17 +26,20 @@ function App() {
         email: user.email,
         password: user.password,
       });
-      alert(response.data.message);
+      setAlertMessage("correct");
       localStorage.setItem("acess_token", response.data.acess_token);
-      window.location.href = "/home";
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 1000);
     } catch (error) {
+      setAlertMessage("error");
       console.error(error);
     }
   }
 
   return (
     <CardLogin title="Login ou Registre-se">
-      <TextInput 
+      <TextInput
         data-bs-theme="dark"
         placeholder="Email"
         value={user.email}
@@ -55,6 +62,11 @@ function App() {
       <span style={{ fontSize: 12, fontWeight: "bold" }}>
         Não possui conta? <a href="/Signup">Cadastre-se</a>
       </span>
+      {alertMessage === "" ? null : alertMessage === "correct" ? (
+        <CustomAlert message={"Autenticado com sucesso!"} variant="success" />
+      ) : (
+        <CustomAlert message={"Credenciais Inválidas"} variant="danger" />
+      )}
     </CardLogin>
   );
 }
