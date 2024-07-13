@@ -5,6 +5,8 @@ import * as S from "./menu.styled";
 import { TextInput } from "@components/input/text-input/input";
 import { useState } from "react";
 import { selectMethod } from "../../api/methods";
+import CustomAlert from "@components/alert/alert";
+import logo from "../../assets/logo.png";
 
 type MenuType = {
   show: boolean;
@@ -16,6 +18,7 @@ type MenuType = {
 };
 
 function Menu({ show, handleClose, user, toggleEdit, edit }: MenuType) {
+  const [alertMessage, setAlertMessage] = useState<string>("");
   const [userMenu, setUserMenu] = useState<User>({
     id: user?.id ?? "",
     username: user?.username ?? "",
@@ -30,7 +33,13 @@ function Menu({ show, handleClose, user, toggleEdit, edit }: MenuType) {
   };
 
   const updateUser = async () => {
-    await selectMethod("put", `users/${user?.id}`, userMenu);
+    try {
+      await selectMethod("put", `users/${user?.id}`, userMenu);
+      setAlertMessage("correct");
+    } catch (error) {
+      console.error(error);
+      setAlertMessage("error");
+    }
   };
 
   function logout() {
@@ -108,9 +117,36 @@ function Menu({ show, handleClose, user, toggleEdit, edit }: MenuType) {
           </S.Content>
           <S.Footer>
             <S.ExitButton onClick={logout}>Sair</S.ExitButton>
-            @2024 - Todos os direitos reservados
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                flexDirection: "row",
+                justifyContent: "center",
+              }}
+            >
+              @2024 - Todos os direitos reservados | @belone.fraga
+              <img
+                src={logo}
+                alt=""
+                style={{
+                  width: 30,
+                  height: 30,
+                }}
+              />
+            </div>
           </S.Footer>
         </Offcanvas.Body>
+        {alertMessage === "" ? null : alertMessage === "correct" ? (
+          <CustomAlert
+            message={"Usuário alterado com sucesso!"}
+            variant="success"
+          />
+        ) : (
+          <CustomAlert message={"Erro ao alterar usuário!"} variant="danger" />
+        )}
       </Offcanvas>
     </>
   );

@@ -19,10 +19,10 @@ export const Container = styled.section`
 
 export const Content = styled.div`
   border-radius: 10px;
-  width: 50%;
+  width: 35%;
   height: 70%;
   background-color: white;
-  padding: 20px;
+  padding: 0px 20px 0 20px;
   display: flex;
   justify-content: space-evenly;
   flex-direction: column;
@@ -43,9 +43,12 @@ export const Button = styled.button`
   align-items: center;
   background-color: transparent;
   color: gray;
+  outline: none;
+  border: none;
 
   &:hover {
-    color: black;
+    color: red;
     border: none;
+    outline: none;
   }
 `;

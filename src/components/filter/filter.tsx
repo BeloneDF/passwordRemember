@@ -13,6 +13,7 @@ import { LargeButtonComponent } from "../largeButton/largeButton";
 import { selectMethod } from "../../api/methods";
 import { jwtDecode } from "jwt-decode";
 import CustomAlert from "@components/alert/alert";
+import { Image } from "react-bootstrap";
 
 interface MyJwtPayload {
   data: Passwords[];
@@ -23,9 +24,10 @@ function Filter() {
   const [loading, setLoading] = useState(true);
   const { setSearch, filteredPasswords, search } = useFilter(passwords);
   const { open, toggleModal } = useOpenModal();
-  const [checked] = useState(false);
+  const [checked, setChecked] = useState(false);
   const userContext = useContext(UserContext);
   const [alertMessage, setAlertMessage] = useState<string>("");
+  const [generatedPassword, setGeneratedPassword] = useState("");
 
   const [password, setPassword] = useState<Passwords>({
     password: "",
@@ -59,7 +61,7 @@ function Filter() {
       setLoading(false);
     } catch (error) {
       console.error(error);
-      setLoading(false); // Garanta que setLoading seja definido em caso de erro também
+      setLoading(false);
     }
   }, [user]);
 
@@ -96,10 +98,8 @@ function Filter() {
   }, [user, password, getPasswords, toggleModal]);
 
   useEffect(() => {
-    getPasswords(); // Chamada inicial ao montar o componente
-  }, [getPasswords]); // Certifique-se de usar getPasswords como dependência para reexecutar apenas quando ele mudar
-
-  const generetedPassword = newPassword();
+    getPasswords();
+  }, [getPasswords]);
 
   const handleFileChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -125,6 +125,12 @@ function Filter() {
     }));
   };
 
+  useEffect(() => {
+    if (checked) {
+      setGeneratedPassword(newPassword());
+    }
+  }, [checked]);
+
   return (
     <S.Container>
       {alertMessage === "" ? null : alertMessage === "correct" ? (
@@ -136,20 +142,6 @@ function Filter() {
         <CustomAlert message={"Erro ao adicionar senha!"} variant="danger" />
       )}
       <Modal open={open} toggleModal={toggleModal}>
-        <div>
-          <label> Gerar senha</label>
-          <input disabled onChange={handleInputChange} type="checkbox" />
-          Indisponível no momento
-        </div>
-        <TextInput
-          id="password"
-          value={checked ? generetedPassword : password.password}
-          label="Digite a sua senha"
-          placeholder="Digite sua senha..."
-          disabled={checked ? true : false}
-          onChange={handleInputChange}
-          type="password"
-        />
         <TextInput
           id="name"
           value={password.name}
@@ -158,12 +150,78 @@ function Filter() {
           onChange={handleInputChange}
           type="text"
         />
-        <input
-          id="image"
-          placeholder=""
-          onChange={(e) => handleFileChange(e, "image")}
-          type="file"
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: 10,
+            paddingLeft: 10,
+          }}
+        >
+          <label>Imagem do Site/Aplicação</label>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              gap: 10,
+            }}
+          >
+            {password.image && (
+              <Image
+                src={password.image}
+                roundedCircle
+                style={{ width: 50, height: 50 }}
+              />
+            )}
+            <input
+              id="image"
+              placeholder=""
+              onChange={(e) => handleFileChange(e, "image")}
+              type="file"
+            />
+          </div>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            gap: 10,
+            paddingLeft: 10,
+          }}
+        >
+          <label> Gerar senha aleatória</label>
+          <input
+            id="checked"
+            onChange={(e) => setChecked(e.target.checked)}
+            type="checkbox"
+          />
+        </div>
+        <TextInput
+          id="password"
+          value={checked ? generatedPassword : password.password}
+          label="Digite a sua senha"
+          placeholder="Digite sua senha..."
+          disabled={checked ? true : false}
+          onChange={handleInputChange}
+          type="password"
         />
+        <span
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            gap: 10,
+            paddingLeft: 10,
+            bottom: 10,
+          }}
+        >
+          Senha: {checked ? generatedPassword : password.password}
+        </span>
         <TextInput
           id="login"
           value={password.login}
@@ -172,7 +230,16 @@ function Filter() {
           onChange={handleInputChange}
           type="text"
         />
-        <div>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "flex-start",
+            gap: 10,
+            paddingLeft: 10,
+          }}
+        >
           <label>2FA?</label>
           <input
             name="second_verification"
@@ -191,14 +258,34 @@ function Filter() {
               onChange={handleInputChange}
               type="text"
             />
-            <input
-              id="imagem2fa"
-              placeholder=""
-              onChange={(e) =>
-                handleFileChange(e, "image_verification_software")
-              }
-              type="file"
-            />
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+                paddingLeft: 10,
+              }}
+            >
+              <label>Imagem do Software de 2 fatores</label>
+              <div>
+                {password.image_verification_software && (
+                  <Image
+                    src={password.image_verification_software}
+                    roundedCircle
+                    style={{ width: 50, height: 50 }}
+                  />
+                )}
+                <input
+                  id="imagem2fa"
+                  placeholder=""
+                  onChange={(e) =>
+                    handleFileChange(e, "image_verification_software")
+                  }
+                  type="file"
+                />
+              </div>
+            </div>
           </>
         )}
         <LargeButtonComponent onClick={() => addPassword()} id="btnAdd">

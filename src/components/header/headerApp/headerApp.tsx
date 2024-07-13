@@ -6,6 +6,7 @@ import useOpenModal from "@hooks/useOpenModal";
 import Image from "react-bootstrap/Image";
 import useEdit from "@hooks/useEdit";
 
+
 function HeaderApp() {
   const userContext = useContext(UserContext);
   const { open, toggleModal } = useOpenModal();
