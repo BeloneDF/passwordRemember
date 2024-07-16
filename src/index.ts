@@ -13,6 +13,13 @@ function runServer() {
     cors({
       origin: "*",
       methods: ["GET", "POST", "PUT", "DELETE"],
+      allowedHeaders: [
+        "Content-Type",
+        "Authorization",
+        "Accept",
+        "Origin",
+        "*",
+      ],
     })
   );
   app.use(AuthRoutes());
