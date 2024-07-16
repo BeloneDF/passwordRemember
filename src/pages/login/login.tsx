@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import CardLogin from "../../components/cardLogin";
 import { TextInput } from "../../components/input/text-input/input.tsx";
 import { LargeButton } from "../../components/largeButton/largeButton.styled.ts";
@@ -22,7 +21,7 @@ function App() {
 
   async function login() {
     try {
-      const response = selectMethod("post", "/login", {
+      const response = await selectMethod("post", "/login", {
         email: user.email,
         password: user.password,
       });
