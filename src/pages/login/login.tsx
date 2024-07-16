@@ -1,10 +1,9 @@
 import { useState } from "react";
-import axios from "axios";
 import CardLogin from "../../components/cardLogin";
 import { TextInput } from "../../components/input/text-input/input.tsx";
 import { LargeButton } from "../../components/largeButton/largeButton.styled.ts";
 import CustomAlert from "@components/alert/alert";
-
+import { selectMethod } from "src/api/methods.ts";
 
 interface User {
   username: string;
@@ -19,10 +18,10 @@ function App() {
     email: "",
     password: "",
   });
-
+  
   async function login() {
     try {
-      const response = await axios.post("http://localhost:3001/login", {
+      const response = await selectMethod("post", "/login", {
         email: user.email,
         password: user.password,
       });
