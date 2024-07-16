@@ -3,7 +3,7 @@ import CardLogin from "../../components/cardLogin";
 import { TextInput } from "../../components/input/text-input/input.tsx";
 import { LargeButton } from "../../components/largeButton/largeButton.styled.ts";
 import CustomAlert from "@components/alert/alert";
-import { selectMethod } from "src/api/methods.ts";
+import { selectMethod } from "../../api/methods";
 
 interface User {
   username: string;
