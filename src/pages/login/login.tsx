@@ -4,6 +4,7 @@ import { TextInput } from "../../components/input/text-input/input.tsx";
 import { LargeButton } from "../../components/largeButton/largeButton.styled.ts";
 import CustomAlert from "@components/alert/alert";
 import { selectMethod } from "../../api/methods";
+import Loading from "@components/loading/loading.tsx";
 
 interface User {
   username: string;
@@ -18,7 +19,8 @@ function App() {
     email: "",
     password: "",
   });
-  
+  const [loading, setLoading] = useState(false);
+
   async function login() {
     try {
       const response = await selectMethod("post", "/login", {
@@ -26,6 +28,7 @@ function App() {
         password: user.password,
       });
       setAlertMessage("correct");
+      setLoading(true);
       localStorage.setItem("acess_token", response.data.acess_token);
       setTimeout(() => {
         window.location.href = "/home";
@@ -46,7 +49,7 @@ function App() {
         type="text"
         id="username"
         label="Username"
-      />{" "}
+      />
       <TextInput
         data-bs-theme="dark"
         placeholder="Password"
@@ -57,7 +60,12 @@ function App() {
         label="Password"
       />
       <br />
-      <LargeButton onClick={() => login()}>Login</LargeButton>
+      {loading ? (
+        <Loading />
+      ) : (
+        <LargeButton onClick={() => login()}>Login</LargeButton>
+      )}
+
       <span style={{ fontSize: 12, fontWeight: "bold" }}>
         Não possui conta? <a href="/Signup">Cadastre-se</a>
       </span>

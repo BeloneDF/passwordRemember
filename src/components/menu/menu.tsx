@@ -19,6 +19,7 @@ type MenuType = {
 
 function Menu({ show, handleClose, user, toggleEdit, edit }: MenuType) {
   const [alertMessage, setAlertMessage] = useState<string>("");
+
   const [userMenu, setUserMenu] = useState<User>({
     id: user?.id ?? "",
     username: user?.username ?? "",
@@ -36,6 +37,9 @@ function Menu({ show, handleClose, user, toggleEdit, edit }: MenuType) {
     try {
       await selectMethod("put", `users/${user?.id}`, userMenu);
       setAlertMessage("correct");
+      setTimeout(() => {
+        window.location.reload();
+      }, 500);
     } catch (error) {
       console.error(error);
       setAlertMessage("error");

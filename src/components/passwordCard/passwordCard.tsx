@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { Passwords } from "../../types/passwords";
 import * as S from "./passwordCard.styled";
 import { selectMethod } from "../../api/methods";
@@ -8,7 +8,7 @@ interface PasswordCardProps {
   children?: ReactNode;
 }
 
-function PasswordCard({ pass }: PasswordCardProps) {
+export const PasswordCard = React.memo(({ pass }: PasswordCardProps) => {
   const maskedPass = pass.password.replace(/./g, "•");
 
   async function deletePassword() {
@@ -85,6 +85,4 @@ function PasswordCard({ pass }: PasswordCardProps) {
       </S.ContentMaster>
     </S.Container>
   );
-}
-
-export default PasswordCard;
+});

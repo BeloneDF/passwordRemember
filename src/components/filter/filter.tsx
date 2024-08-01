@@ -180,6 +180,7 @@ function Filter() {
               placeholder=""
               onChange={(e) => handleFileChange(e, "image")}
               type="file"
+              accept="image/*"
             />
           </div>
         </div>
@@ -283,6 +284,7 @@ function Filter() {
                     handleFileChange(e, "image_verification_software")
                   }
                   type="file"
+                  accept="image/*"
                 />
               </div>
             </div>
