@@ -107,6 +107,7 @@ function Signup() {
           required
           id="photo"
           onChange={(e) => handleFileChange(e)}
+          accept="image/*"
         />
       </div>
       {loading ? (

@@ -66,16 +66,27 @@ export const ButtonCopyPassword = styled(FaRegCopy)`
     color: black;
   }
 `;
-interface CircleSecondVerificationProps {
+
+interface AProps {
   backgroundColor: string;
 }
 
-export const CircleSecondVerification = styled.div<CircleSecondVerificationProps>`
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  background-color: ${(props) => props.backgroundColor};
-`;
+// Usando a interface para tipar as props
+export const CircleSecondVerification = styled.div<AProps>((props) => ({
+  backgroundColor: props.backgroundColor,
+  width: "15px",
+  height: "15px",
+  borderRadius: "50%",
+}));
+
+// export const CircleSecondVerification = styled.div<{
+//   $backgroundColor: string;
+// }>`
+//   width: 15px;
+//   height: 15px;
+//   border-radius: 50%;
+//   background-color: props.backgroundColor;
+// `;
 
 export const ImageSecondVerification = styled.img`
   width: 20px;
