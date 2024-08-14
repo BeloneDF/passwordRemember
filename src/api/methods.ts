@@ -1,9 +1,9 @@
-import api from "./api";
+import { api } from "./api";
 
 type HttpMethod = "get" | "post" | "put" | "delete";
 
 interface Data {
-  [key: string]: unknown;
+  [key: string]: string;
 }
 
 function selectMethod(method: HttpMethod, url: string, data?: Data) {
