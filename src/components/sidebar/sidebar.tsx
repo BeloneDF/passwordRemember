@@ -1,5 +1,6 @@
 import { CircleUser, Edit, Save, LogOut } from "lucide-react";
 import { User } from "@/types/user";
+import { logOut } from "@/actions/logOut";
 
 export function Sidebar({ user }: { user: User | null }) {
   return (
@@ -47,7 +48,7 @@ export function Sidebar({ user }: { user: User | null }) {
           />
         </div>
         <div className="flex gap-2 flex-row">
-          <button className="bg-zinc-700 text-white p-2 rounded-md w-1/3 items-center flex justify-center hover:bg-zinc-600 transition-all">
+          <button className="bg-zinc-900 text-white p-2 rounded-md w-1/3 items-center flex justify-center hover:bg-zinc-800 transition-all">
             <Edit size={24} />
           </button>
 
@@ -60,8 +61,12 @@ export function Sidebar({ user }: { user: User | null }) {
         <span className="text-zinc-500">
           © 2024 - Todos os direitos reservados
         </span>
-        <button className="bg-zinc-900 text-white p-2 rounded-md items-center flex justify-center hover:bg-zinc-800 transition-all">
-          <LogOut size={24} /> Sair
+        <button
+          onClick={logOut}
+          className="bg-zinc-900 text-white p-2 rounded-md items-center flex justify-center hover:bg-zinc-800 transition-all"
+        >
+          <LogOut size={24} />
+          Sair
         </button>
       </footer>
     </aside>

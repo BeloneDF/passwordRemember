@@ -21,22 +21,26 @@ const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const cookies = parseCookies();
   const token = cookies.access_token;
-  const decode = decodeToken(token);
-  async function getUser() {
-    try {
-      const response = await selectMethod("get", `users/${decode.sub}`);
-      setUser(response.data.user);
-    } catch (error) {
-      console.error(error);
-    }
-  }
+
   useEffect(() => {
     if (!token) {
       console.error("No access token found in cookies");
       return;
     }
+
+    const decode = decodeToken(token);
+
+    async function getUser() {
+      try {
+        const response = await selectMethod("get", `users/${decode.sub}`);
+        setUser(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user:", error); // Debugging
+      }
+    }
+
     getUser();
-  }, []);
+  }, [token]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

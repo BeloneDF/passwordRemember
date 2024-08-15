@@ -4,6 +4,7 @@ interface InputTextProps {
   name: string;
   type: string;
   className?: string;
+  accept?: string;
 }
 
 export default function InputText({
@@ -11,21 +12,20 @@ export default function InputText({
   placeholder,
   name,
   type,
-  className,
+  accept,
 }: InputTextProps) {
-  var thisClassName =
-    "block text-gray-700 text-sm font-bold mb-2" +
-    (className ? " " + className : "");
-
   return (
-    <div className="mb-4">
-      <label className={thisClassName}>{label}</label>
+    <div>
+      <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+        {label}
+      </label>
       <input
-        className=" appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        className="block w-full p-2.5 text-sm text-gray-900 bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 focus:border-primary-600 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
         name={name}
         id={name}
         type={type}
         placeholder={placeholder}
+        accept={accept}
       />
     </div>
   );
