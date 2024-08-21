@@ -1,11 +1,9 @@
 "use client";
 import "../../app/globals.css";
-import { Plus } from "lucide-react";
 import { Sidebar } from "@/components/sidebar/sidebar";
 import { Filter } from "@/components/filter/filter";
-import { use, useContext } from "react";
+import { useContext } from "react";
 import { UserContext } from "@/hooks/userContext";
-import { Modal } from "@/components/modal/modal";
 
 export default function Home() {
   const userContext = useContext(UserContext);

@@ -1,4 +1,4 @@
-import { Plus, XIcon } from "lucide-react";
+import { Plus, XIcon, Bolt } from "lucide-react";
 import useOpenModal from "@/hooks/useOpenModal";
 
 interface ModalProps {
@@ -11,13 +11,21 @@ export function Modal({ children, title }: ModalProps) {
 
   return (
     <>
-      <div className="flex items-center justify-between mt-4">
+      <div className="flex items-center gap-4 mt-4">
         <button
           onClick={() => toggleModal()}
-          className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-md hover:bg-zinc-800 transition-all"
+          className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-md hover:bg-zinc-800"
         >
           <Plus size={24} />
-          <span>Adicionar nova senha</span>
+          <span>Add new password</span>
+        </button>
+
+        <button
+          onClick={() => toggleModal()}
+          className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-md hover:bg-zinc-800 "
+        >
+          <Bolt size={24} />
+          <span>Gerar senha</span>
         </button>
       </div>
 
