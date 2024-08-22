@@ -15,7 +15,7 @@ export function CardPassword({ password }: CardPasswordProps) {
           <img
             src={password.image}
             alt={password.name}
-            className="w-28 h-24 rounded-lg object-contain bg-transparent "
+            className="w-24 h-24 rounded-lg object-contain bg-transparent "
           />
         ) : (
           <ImageOff size={72} />
@@ -45,6 +45,11 @@ export function CardPassword({ password }: CardPasswordProps) {
             className={`h-4 w-4 rounded-full ${
               password.second_verification ? "bg-green-600" : "bg-red-500"
             }`}
+          />
+          <img
+            className="h-5 w-5 rounded-full"
+            src={password.image_verification_software}
+            alt=""
           />
           <button
             onClick={() => password && deletePassword({ password })}

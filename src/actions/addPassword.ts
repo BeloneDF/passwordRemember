@@ -1,27 +1,25 @@
 // No arquivo onde você usa addPassword
+import { selectMethod } from "@/api/methods";
 import { toBase64 } from "@/functions/toBase64";
-import { Passwords } from "@/types/passwords";
+import { AddPasswords } from "@/types/passwords";
 
-export async function addPassword(data: Passwords) {
-  console.log(data);
+export async function addPassword(data: AddPasswords) {
+  const { image, image_verification_software, name } = data;
 
-  // const file = data.get("image") as File | null;
-  // const password = data.get("password"); // Acessando a propriedade password corretamente
+  const imageBase64 =
+    image && image[0] instanceof File ? await toBase64(image[0]) : undefined;
 
-  // if (file && file.size > 0 && file.type !== "application/octet-stream") {
-  //   console.log("Arquivo válido:", file.name);
-  //   try {
-  //     const base64 = await toBase64(file);
-  //     console.log(base64);
-  //   } catch (error) {
-  //     console.error("Erro ao converter para Base64:", error);
-  //   }
-  // } else {
-  //   console.log("Arquivo inválido ou não fornecido.");
-  // }
+  const imageVerificationSoftwareBase64 =
+    image_verification_software &&
+    image_verification_software[0] instanceof File
+      ? await toBase64(image_verification_software[0])
+      : undefined;
 
-  // // Se necessário, faça algo com password aqui
-  // if (password) {
-  //   console.log("Password:", password);
-  // }
+  const newData = {
+    ...data,
+    name: name.toLowerCase(),
+    image: imageBase64,
+    image_verification_software: imageVerificationSoftwareBase64,
+  };
+  selectMethod("post", "password", newData);
 }

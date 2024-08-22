@@ -3,7 +3,7 @@ import { api } from "./api";
 type HttpMethod = "get" | "post" | "put" | "delete";
 
 interface Data {
-  [key: string]: string;
+  [key: string]: string | boolean | number | undefined; // Ajuste conforme necessário
 }
 
 function selectMethod(method: HttpMethod, url: string, data?: Data) {

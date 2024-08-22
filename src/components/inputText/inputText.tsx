@@ -1,5 +1,6 @@
 import React from "react";
 import { useForm } from "react-hook-form";
+
 interface InputTextProps {
   label: string;
   placeholder: string;
@@ -7,7 +8,7 @@ interface InputTextProps {
   type: string;
   className?: string;
   accept?: string;
-  register?: ReturnType<typeof useForm>["register"]; // Adiciona o tipo para o register
+  register?: ReturnType<typeof useForm>["register"];
 }
 
 const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
@@ -25,7 +26,7 @@ const InputText = React.forwardRef<HTMLInputElement, InputTextProps>(
           placeholder={placeholder}
           accept={accept}
           ref={ref}
-          {...(register && register(name))} // Usa o register se estiver disponível
+          {...(register && register(name))}
         />
       </div>
     );
