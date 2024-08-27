@@ -1,4 +1,3 @@
-// functions/toBase64.ts
 export function toBase64(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

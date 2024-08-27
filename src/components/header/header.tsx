@@ -1,6 +1,6 @@
 import { Modal } from "../modal/modal";
 import { NewPassword } from "../newPassword/newPassword";
-
+import { PasswordGenerator } from "../passwordGenerator/passwordGenerator";
 interface HeaderProps {
   setSearch: (value: string) => void;
   search: string;
@@ -18,9 +18,15 @@ export function Header({ search, setSearch }: HeaderProps) {
           placeholder="Pesquise sua senha"
         />
       </div>
-      <Modal title="Adicionar nova senha">
-        <NewPassword />
-      </Modal>
+      <div className="flex gap-2">
+        <Modal title="Add new Password">
+          <NewPassword />
+        </Modal>
+
+        <Modal title="Password Generator">
+          <PasswordGenerator />
+        </Modal>
+      </div>
     </header>
   );
 }

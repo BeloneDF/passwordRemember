@@ -1,6 +1,5 @@
-// No arquivo onde você usa addPassword
 import { selectMethod } from "@/api/methods";
-import { toBase64 } from "@/functions/toBase64";
+import { toBase64 } from "@/actions/toBase64";
 import { AddPasswords } from "@/types/passwords";
 
 export async function addPassword(data: AddPasswords) {

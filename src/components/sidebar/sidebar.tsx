@@ -6,7 +6,7 @@ export function Sidebar({ user }: { user: User | null }) {
   return (
     <aside className="w-72 bg-zinc-950 p-6 text-white">
       <div className="flex gap-4 p-2 items-center justify-between">
-        <span className="font-bold text-lg"> Bem vindo, {user?.username}!</span>
+        <span className="font-bold text-lg"> Wellcome, {user?.username}!</span>
         {user?.photo ? (
           <img
             src={user?.photo}
@@ -19,7 +19,7 @@ export function Sidebar({ user }: { user: User | null }) {
       </div>
       <div className="mt-4 flex flex-col gap-4">
         <div className="gap-2 flex flex-col">
-          <span className="font-normal">Nome</span>
+          <span className="font-normal">Name</span>
           <input
             type="text"
             placeholder="Username"
@@ -59,14 +59,14 @@ export function Sidebar({ user }: { user: User | null }) {
       </div>
       <footer className="mt-4 text-center text-xs flex flex-col-reverse gap-4 h-3/6 ">
         <span className="text-zinc-500">
-          © 2024 - Todos os direitos reservados
+          © 2024 - All rights reserved - Privacy Policy
         </span>
         <button
           onClick={logOut}
-          className="bg-zinc-900 text-white p-2 rounded-md items-center flex justify-center hover:bg-zinc-800 transition-all"
+          className="bg-zinc-900 text-white p-2 rounded-md items-center flex justify-center gap-2 hover:bg-zinc-800 transition-all"
         >
           <LogOut size={24} />
-          Sair
+          Log Out
         </button>
       </footer>
     </aside>

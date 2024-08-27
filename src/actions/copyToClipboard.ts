@@ -10,3 +10,8 @@ export function copyToClipboard({ password, type }: CopyToClipboardProps) {
   navigator.clipboard.writeText(text);
   alert(`${type === "password" ? "Senha" : "Login"} copiado com sucesso!`);
 }
+
+export function copyToClipboardNewPassword(password: string) {
+  navigator.clipboard.writeText(password);
+  alert("Senha copiada com sucesso!");
+}
