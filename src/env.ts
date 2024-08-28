@@ -7,6 +7,9 @@ const envSchema = z.object({
   JWT_SECRETS: z.string(),
   JWT_SECRETS_PASSWORD: z.string(),
   EMAIL_API_KEY: z.string(),
+  EMAILJS_PUBLICS_API_KEY: z.string(),
+  EMAILJS_TEMPLATE_ID: z.string(),
+  EMAILJS_SERVICE_ID: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

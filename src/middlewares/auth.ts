@@ -21,21 +21,21 @@ export async function Auth(body: User) {
       {
         message: "Credenciais Inválidas",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
   const validPassword = await Bun.password.verify(
     body.password,
     user.password,
-    "argon2id"
+    "argon2id",
   );
   if (!validPassword) {
     return Response.json(
       {
         message: "Credenciais Inválidas",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -44,7 +44,7 @@ export async function Auth(body: User) {
       {
         message: "Conta não verificada",
       },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
