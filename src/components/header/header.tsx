@@ -1,6 +1,8 @@
 import { Modal } from "../modal/modal";
 import { NewPassword } from "../newPassword/newPassword";
 import { PasswordGenerator } from "../passwordGenerator/passwordGenerator";
+import { Plus, Bolt } from "lucide-react";
+
 interface HeaderProps {
   setSearch: (value: string) => void;
   search: string;
@@ -19,11 +21,11 @@ export function Header({ search, setSearch }: HeaderProps) {
         />
       </div>
       <div className="flex gap-2">
-        <Modal title="Add new Password">
+        <Modal title="Add new Password" icon={Plus}>
           <NewPassword />
         </Modal>
 
-        <Modal title="Password Generator">
+        <Modal title="Password Generator" icon={Bolt}>
           <PasswordGenerator />
         </Modal>
       </div>

@@ -1,12 +1,13 @@
-import { Plus, XIcon } from "lucide-react";
+import { XIcon } from "lucide-react";
 import useOpenModal from "@/hooks/useOpenModal";
 
 interface ModalProps {
   children: React.ReactNode;
   title: string;
+  icon: React.ComponentType;
 }
 
-export function Modal({ children, title }: ModalProps) {
+export function Modal({ children, title, icon: Icon }: ModalProps) {
   const { open, toggleModal } = useOpenModal();
 
   return (
@@ -16,7 +17,7 @@ export function Modal({ children, title }: ModalProps) {
           onClick={() => toggleModal()}
           className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-md hover:bg-zinc-800"
         >
-          <Plus size={24} />
+          <Icon size={24} />
           <span>{title}</span>
         </button>
       </div>

@@ -6,7 +6,6 @@ import { useContext } from "react";
 import { UserContext } from "@/hooks/userContext";
 import { useForm } from "react-hook-form";
 
-//validação form
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordsSchema } from "@/types/passwords";

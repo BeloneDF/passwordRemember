@@ -13,11 +13,17 @@ export function useGenPassword({
     symbols?: boolean;
   };
 }) {
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState({
+    password: "",
+    percent: 0,
+  });
 
   const generate = () => {
     const newPassword = genPassword({ caracter, passwordTypes });
-    setPassword(newPassword);
+    setPassword({
+      password: newPassword.password,
+      percent: newPassword.percent,
+    });
   };
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Copy, RefreshCcw } from "lucide-react";
 import { useGenPassword } from "@/hooks/useGenPassword";
 import { copyToClipboardNewPassword } from "@/actions/copyToClipboard";
+import { ProgressBar } from "../progressBar/progressBar";
 
 type PasswordType = "uppercase" | "lowercase" | "symbols" | "numbers";
 
@@ -83,23 +84,23 @@ export function PasswordGenerator() {
           <h2 className="block mb-2 font-medium text-gray-900 dark:text-white">
             Your generated password
           </h2>
-          <div className="h-5 w-40 rounded-full bg-green-700 mb-1 items-center flex text-lg font-medium justify-center text-white/70">
-            Good
-          </div>
+          <ProgressBar percent={password.percent} />
         </div>
         <span className="flex gap-4">
           <input
-            className={`h-12 rounded-md w-60 p-2 ${
-              password === "Empty characters" ? "bg-red-700" : "bg-green-700"
+            className={`h-12 rounded-md w-60 p-2 text-white/70 ${
+              password.password === "Empty characters"
+                ? "bg-red-700"
+                : "bg-green-700"
             }`}
-            type="text "
+            type="text"
             disabled
-            value={password}
+            value={password.password}
           />
           <div className="flex justify-evenly w-40">
             <button
               className="text-white"
-              onClick={() => copyToClipboardNewPassword(password)}
+              onClick={() => copyToClipboardNewPassword(password.password)}
             >
               <Copy />
             </button>

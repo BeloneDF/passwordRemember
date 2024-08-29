@@ -5,7 +5,7 @@ const cookies = parseCookies();
 const token = typeof window !== "undefined" ? cookies.access_token : null;
 
 export const api = axios.create({
-  baseURL: "https://passwordremember-production.up.railway.app/",
+  baseURL: "http://localhost:3001/",
   headers: {
     Authorization: token ? `Bearer ${token}` : "",
     Accept: "*/*",
