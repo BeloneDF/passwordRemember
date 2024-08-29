@@ -1,35 +1,43 @@
-import { Resend } from "resend";
 import { env } from "../../env";
-import emailjs from "@emailjs/browser";
+import { MailerSend, EmailParams, Recipient, Sender } from "mailersend";
 
 export async function VerifyEmail({
   id,
   email,
+  username,
 }: {
   id: string;
   email: string;
+  username: string;
 }) {
-  // const resend = new Resend(env.EMAIL_API_KEY);
-  // console.log(email);
-  // resend.emails.send({
-  //   from: "onboarding@resend.dev",
-  //   to: "belonefraga1@hotmail.com",
-  //   subject: "Verify your email",
-  //   text: `Clique aqui para verificar seu cadastro: https://passwordremember-production.up.railway.app/verify/user/${id}`,
-  // });
+  const mailersend = new MailerSend({
+    apiKey: env.MAILERSEND_API_KEY,
+  });
 
-  const templateParams = {
-    to_email: email,
-    verify_link: `https://passwordremember-production.up.railway.app/verify/user/${id}`,
-  };
+  const recipients = [new Recipient(email, username)];
+  const sentFrom = new Sender(env.MILERSEND_SENDER, "Password Remember");
+
+  const personalization = [
+    {
+      email: email,
+      data: {
+        verifycation_link: `${env.HOST}/verify/user/${id}`,
+        username: username,
+      },
+    },
+  ];
+
+  const emailParams = new EmailParams()
+    .setFrom(sentFrom)
+    .setTo(recipients)
+    .setReplyTo(sentFrom)
+    .setSubject("Verify your account - Password Remember")
+    .setTemplateId(env.MILERSEND_TEMPLATE_ID)
+    .setPersonalization(personalization);
+
   try {
-    emailjs.send(
-      env.EMAILJS_SERVICE_ID,
-      env.EMAILJS_TEMPLATE_ID,
-      templateParams,
-      env.EMAILJS_PUBLICS_API_KEY
-    );
+    await mailersend.email.send(emailParams);
   } catch (error) {
-    console.log(error);
+    console.log("Error sending email:", error);
   }
 }

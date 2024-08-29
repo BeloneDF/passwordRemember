@@ -91,8 +91,7 @@ export async function PutUser({ id, body }: { id: string; body: User }) {
 
 export async function AddUser(data: User) {
   const result = UserSchema.safeParse({ data });
-  const { password, email, ...userData } = data; // Extrai a senha do objeto data
-  console.log(data);
+  const { password, email, ...userData } = data;
   const hashedPassword: string = await Bun.password.hash(
     data.password,
     "argon2id"
@@ -117,7 +116,11 @@ export async function AddUser(data: User) {
             verified: false,
           },
         });
-        VerifyEmail({ id: newUser.id, email: newUser.email });
+        VerifyEmail({
+          id: newUser.id,
+          email: newUser.email,
+          username: data.username,
+        });
         return {
           message: `Cadastro Realizado com sucesso!`,
           code: 200,

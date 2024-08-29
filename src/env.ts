@@ -6,10 +6,9 @@ const envSchema = z.object({
   DATABASE_URL: z.string().url(),
   JWT_SECRETS: z.string(),
   JWT_SECRETS_PASSWORD: z.string(),
-  EMAIL_API_KEY: z.string(),
-  EMAILJS_PUBLICS_API_KEY: z.string(),
-  EMAILJS_TEMPLATE_ID: z.string(),
-  EMAILJS_SERVICE_ID: z.string(),
+  MAILERSEND_API_KEY: z.string(),
+  MILERSEND_SENDER: z.string(),
+  MILERSEND_TEMPLATE_ID: z.string(),
 });
 
 export const env = envSchema.parse(process.env);
