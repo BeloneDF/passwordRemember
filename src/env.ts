@@ -7,8 +7,8 @@ const envSchema = z.object({
   JWT_SECRETS: z.string(),
   JWT_SECRETS_PASSWORD: z.string(),
   MAILERSEND_API_KEY: z.string(),
-  MILERSEND_SENDER: z.string(),
-  MILERSEND_TEMPLATE_ID: z.string(),
+  MAILERSEND_SENDER: z.string(),
+  MAILERSEND_TEMPLATE_ID: z.string(),
 });
 
 export const env = envSchema.parse(process.env);

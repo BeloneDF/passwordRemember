@@ -14,30 +14,28 @@ export async function VerifyEmail({
     apiKey: env.MAILERSEND_API_KEY,
   });
 
-  const recipients = [new Recipient(email, username)];
-  const sentFrom = new Sender(env.MILERSEND_SENDER, "Password Remember");
-
-  const personalization = [
-    {
-      email: email,
-      data: {
-        verifycation_link: `${env.HOST}/verify/user/${id}`,
-        username: username,
-      },
-    },
-  ];
+  const recipient = new Recipient(email, username);
+  const sender = new Sender(env.MAILERSEND_SENDER, "Password Remember");
 
   const emailParams = new EmailParams()
-    .setFrom(sentFrom)
-    .setTo(recipients)
-    .setReplyTo(sentFrom)
+    .setFrom(sender)
+    .setTo([recipient])
+    .setReplyTo(sender)
     .setSubject("Verify your account - Password Remember")
-    .setTemplateId(env.MILERSEND_TEMPLATE_ID)
-    .setPersonalization(personalization);
+    .setTemplateId(env.MAILERSEND_TEMPLATE_ID)
+    .setPersonalization([
+      {
+        email,
+        data: {
+          verification_link: `${env.HOST}/verify/user/${id}`,
+          username,
+        },
+      },
+    ]);
 
   try {
     await mailersend.email.send(emailParams);
   } catch (error) {
-    console.log("Error sending email:", error);
+    console.error("Error sending verification email:", error);
   }
 }

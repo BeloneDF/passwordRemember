@@ -7,7 +7,7 @@ export default function JWT(selection: "jwt" | "refreshJwt") {
       return jwt({
         name: "jwt",
         secret: env.JWT_SECRETS,
-        exp: "7d",
+        exp: "15d",
       });
     case "refreshJwt":
       return jwt({
