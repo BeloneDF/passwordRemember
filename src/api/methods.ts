@@ -2,7 +2,7 @@ import { api } from "./api";
 
 type HttpMethod = "get" | "post" | "put" | "delete";
 
-interface Data {
+export interface Data {
   [key: string]: string | boolean | number | undefined; // Ajuste conforme necessário
 }
 

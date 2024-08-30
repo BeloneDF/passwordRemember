@@ -1,8 +1,36 @@
 import { CircleUser, Edit, Save, LogOut } from "lucide-react";
 import { User } from "@/types/user";
 import { logOut } from "@/actions/logOut";
+import { useEditProfile } from "@/hooks/useEditProfile";
+import { useChangeUser } from "@/hooks/useChangeUser";
+import { selectMethod } from "@/api/methods";
+import { Data } from "@/api/methods";
 
 export function Sidebar({ user }: { user: User | null }) {
+  const { edit, handleEdit } = useEditProfile();
+  const { changedUser, handleChangeUser } = useChangeUser();
+
+  async function saveChanges() {
+    const userData: Data = {
+      username:
+        changedUser.username === user?.username ? "" : changedUser.username,
+      email: changedUser.email === user?.email ? "" : changedUser.email,
+      password:
+        changedUser.password === user?.password ? "" : changedUser.password,
+      photo: changedUser.photo || "",
+    };
+    try {
+      const response = await selectMethod("put", `users/${user?.id}`, userData);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <aside className="w-72 bg-zinc-950 p-6 text-white">
       <div className="flex gap-4 p-2 items-center justify-between">
@@ -23,9 +51,10 @@ export function Sidebar({ user }: { user: User | null }) {
           <input
             type="text"
             placeholder="Username"
-            value={user ? user.username : ""}
+            value={!edit ? changedUser.username : user?.username}
             className="w-full bg-zinc-900 p-2 rounded-md mb-2"
-            disabled
+            disabled={edit}
+            onChange={(e) => handleChangeUser(e.target.value, "username")}
           />
         </div>
         <div className="gap-2 flex flex-col">
@@ -33,9 +62,10 @@ export function Sidebar({ user }: { user: User | null }) {
           <input
             type="email"
             placeholder="Email"
-            value={user ? user.email : ""}
+            value={!edit ? changedUser.email : user?.email}
+            onChange={(e) => handleChangeUser(e.target.value, "email")}
             className="w-full bg-zinc-900 p-2 rounded-md mb-2"
-            disabled
+            disabled={edit}
           />
         </div>
         <div className="gap-2 flex flex-col">
@@ -43,16 +73,24 @@ export function Sidebar({ user }: { user: User | null }) {
           <input
             type="password"
             placeholder="*********"
+            value={!edit ? changedUser.password : user?.password}
+            onChange={(e) => handleChangeUser(e.target.value, "password")}
             className="w-full bg-zinc-900 p-2 rounded-md mb-2"
-            disabled
+            disabled={edit}
           />
         </div>
         <div className="flex gap-2 flex-row">
-          <button className="bg-zinc-900 text-white p-2 rounded-md w-1/3 items-center flex justify-center hover:bg-zinc-800 transition-all">
+          <button
+            onClick={handleEdit}
+            className="bg-zinc-900 text-white p-2 rounded-md w-1/3 items-center flex justify-center hover:bg-zinc-800 transition-all"
+          >
             <Edit size={24} />
           </button>
 
-          <button className="bg-green-700 text-white p-2 rounded-md w-2/3 items-center flex justify-center hover:bg-green-600 hover:text-white transition-all">
+          <button
+            onClick={saveChanges}
+            className="bg-green-700 text-white p-2 rounded-md w-2/3 items-center flex justify-center hover:bg-green-600 hover:text-white transition-all"
+          >
             <Save />
           </button>
         </div>

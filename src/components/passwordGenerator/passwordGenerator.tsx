@@ -5,7 +5,7 @@ import { Copy, RefreshCcw } from "lucide-react";
 import { useGenPassword } from "@/hooks/useGenPassword";
 import { copyToClipboardNewPassword } from "@/actions/copyToClipboard";
 import { ProgressBar } from "../progressBar/progressBar";
-
+//import { usePasswordTypes } from "@/hooks/usePasswordTypes"; arrumar depois
 type PasswordType = "uppercase" | "lowercase" | "symbols" | "numbers";
 
 export function PasswordGenerator() {
@@ -97,14 +97,17 @@ export function PasswordGenerator() {
             disabled
             value={password.password}
           />
-          <div className="flex justify-evenly w-40">
+          <div className="flex justify-evenly  items-center w-40">
             <button
-              className="text-white"
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-9 h-9 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
               onClick={() => copyToClipboardNewPassword(password.password)}
             >
               <Copy />
             </button>
-            <button className="text-white" onClick={() => generate()}>
+            <button
+              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-9 h-9 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+              onClick={() => generate()}
+            >
               <RefreshCcw />
             </button>
           </div>

@@ -9,7 +9,7 @@ interface CardPasswordProps {
 
 export function CardPassword({ password }: CardPasswordProps) {
   return (
-    <div className="flex gap-4 bg-zinc-700 h-32 p-4 rounded-lg text-white hover:bg-white/5 transition-colors">
+    <div className="flex gap-4 bg-zinc-800 h-32 p-4 rounded-lg text-white hover:bg-white/5 transition-colors">
       <div className="flex justify-center items-center w-1/4">
         {password.image ? (
           <img
@@ -53,11 +53,11 @@ export function CardPassword({ password }: CardPasswordProps) {
           />
           <button
             onClick={() => password && deletePassword({ password })}
-            className="text-sm text-red-500 h-6 w-6 items-center flex justify-center rounded-full hover:drop-shadow-xl"
+            className="text-sm text-red-500 h-6 w-6 items-center flex justify-center rounded-lg hover:bg-red-700 hover:text-white"
           >
             <Trash size={16} className="" />
           </button>
-          <button className="text-sm text-blue-500 h-6 w-6 items-center flex justify-center rounded-full hover:bg-blue-800">
+          <button className="text-sm text-blue-500 h-6 w-6 items-center flex justify-center rounded-lg hover:bg-blue-700 hover:text-white">
             <Pencil size={16} />
           </button>
         </div>

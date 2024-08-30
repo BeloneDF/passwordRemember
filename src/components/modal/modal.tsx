@@ -15,7 +15,7 @@ export function Modal({ children, title, icon: Icon }: ModalProps) {
       <div className="flex items-center gap-4 mt-4">
         <button
           onClick={() => toggleModal()}
-          className="flex items-center gap-2 bg-zinc-900 text-white px-4 py-2 rounded-md hover:bg-zinc-800"
+          className="flex items-center gap-2 bg-zinc-800 text-white px-4 py-2 rounded-md hover:bg-zinc-900"
         >
           <Icon size={24} />
           <span>{title}</span>
@@ -34,7 +34,7 @@ export function Modal({ children, title, icon: Icon }: ModalProps) {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Content */}
-            <div className="relative bg-white rounded-lg shadow dark:bg-gray-700 transition-opacity duration-300 ease-out">
+            <div className="relative bg-white rounded-lg shadow dark:bg-zinc-800 transition-opacity duration-300 ease-out">
               {/* Modal Header */}
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white">

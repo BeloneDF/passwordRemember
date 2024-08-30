@@ -14,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="w-screen h-screen bg-zinc-800 flex items-center flex-col justify-center">
+      <body className="w-screen h-screen bg-zinc-900 flex items-center flex-col justify-center">
         <UserProvider>{children}</UserProvider>
       </body>
     </html>
