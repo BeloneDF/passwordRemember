@@ -1,4 +1,9 @@
-export async function resizeImage(file, maxWidth, maxHeight, quality = 0.7) {
+export async function resizeImage(
+  file: any,
+  maxWidth: number,
+  maxHeight: number,
+  quality = 0.7,
+) {
   const img = new Image();
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
@@ -6,7 +11,7 @@ export async function resizeImage(file, maxWidth, maxHeight, quality = 0.7) {
   const url = URL.createObjectURL(file);
   img.src = url;
 
-  await new Promise((resolve) => {
+  await new Promise<void>((resolve) => {
     img.onload = () => resolve();
   });
 
@@ -28,7 +33,7 @@ export async function resizeImage(file, maxWidth, maxHeight, quality = 0.7) {
   canvas.width = width;
   canvas.height = height;
 
-  ctx.drawImage(img, 0, 0, width, height);
+  ctx?.drawImage(img, 0, 0, width, height);
 
   return new Promise((resolve) => {
     canvas.toBlob(
@@ -41,7 +46,7 @@ export async function resizeImage(file, maxWidth, maxHeight, quality = 0.7) {
   });
 }
 
-export async function toBase64(file) {
+export async function toBase64(file: any) {
   const reader = new FileReader();
   return new Promise((resolve, reject) => {
     reader.readAsDataURL(file);

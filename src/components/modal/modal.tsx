@@ -1,10 +1,10 @@
-import { XIcon } from "lucide-react";
+import { XIcon, LucideIcon } from "lucide-react";
 import useOpenModal from "@/hooks/useOpenModal";
 
 interface ModalProps {
   children: React.ReactNode;
   title: string;
-  icon: React.ComponentType;
+  icon: LucideIcon;
 }
 
 export function Modal({ children, title, icon: Icon }: ModalProps) {

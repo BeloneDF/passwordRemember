@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-type createUserProps = {
+export type createUserPropsA = {
   email: string;
   password: string;
   username?: string;

@@ -1,7 +1,6 @@
 import { selectMethod } from "@/api/methods";
-import { createUserProps } from "@/app/page";
+import { createUserPropsA } from "@/types/createUser";
 
-export async function addUser(data: createUserProps) {
-  console.log(data);
+export async function addUser(data: createUserPropsA) {
   selectMethod("post", "user", data);
 }
