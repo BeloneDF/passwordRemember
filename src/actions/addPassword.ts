@@ -1,6 +1,7 @@
 import { selectMethod } from "@/api/methods";
 import { toBase64, resizeImage } from "@/actions/toBase64";
 import { AddPasswords } from "@/types/passwords";
+import { Data } from "@/api/methods";
 
 export async function addPassword(data: AddPasswords) {
   const { image, image_verification_software, name } = data;
@@ -19,12 +20,15 @@ export async function addPassword(data: AddPasswords) {
     ? await resizeImage(imageVerificationSoftwareFile, 800, 800, 0.1)
     : undefined;
 
-  const imageBase64 = resizedImage ? await toBase64(resizedImage) : undefined;
-  const imageVerificationSoftwareBase64 = resizedImageVerificationSoftware
-    ? await toBase64(resizedImageVerificationSoftware)
+  const imageBase64: string | undefined | unknown = resizedImage
+    ? await toBase64(resizedImage)
     : undefined;
+  const imageVerificationSoftwareBase64: string | undefined | unknown =
+    resizedImageVerificationSoftware
+      ? await toBase64(resizedImageVerificationSoftware)
+      : undefined;
 
-  const newData = {
+  const newData: Data = {
     ...data,
     name: name.toLowerCase(),
     image: imageBase64,
