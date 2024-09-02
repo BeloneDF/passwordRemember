@@ -11,19 +11,14 @@ export function Sidebar({ user }: { user: User | null }) {
   const { changedUser, handleChangeUser } = useChangeUser();
 
   async function saveChanges() {
-    const fields: (keyof Data)[] = ["username", "email", "password", "photo"];
-
-    const userData = fields.reduce<Partial<Data>>((acc, field) => {
-      const newValue = changedUser[field];
-      const originalValue = user?.[field];
-
-      if (newValue && newValue !== originalValue) {
-        acc[field] = newValue;
-      }
-
-      return acc;
-    }, {});
-
+    const userData: Data = {
+      username:
+        changedUser.username === user?.username ? "" : changedUser.username,
+      email: changedUser.email === user?.email ? "" : changedUser.email,
+      password:
+        changedUser.password === user?.password ? "" : changedUser.password,
+      photo: changedUser.photo || "",
+    };
     try {
       const response = await selectMethod("put", `users/${user?.id}`, userData);
       console.log(response);

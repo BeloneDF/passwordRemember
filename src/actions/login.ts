@@ -7,17 +7,14 @@ interface User {
   password: string;
 }
 
-export async function login(data: FormData) {
-  const formDataObj = Object.fromEntries(data.entries());
-  const userdata = formDataObj as unknown as User;
+export async function login(data: User) {
+  console.log("DATA");
 
   try {
     const response = await selectMethod("post", "/login", {
-      email: userdata.email,
-      password: userdata.password,
+      email: data.email,
+      password: data.password,
     });
-
-    console.log("AAA", response);
 
     if (response.status === 200) {
       setCookie(null, "access_token", response.data.acess_token, {

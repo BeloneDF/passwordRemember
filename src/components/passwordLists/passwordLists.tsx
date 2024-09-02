@@ -11,7 +11,7 @@ export function PasswordLists({
   passwords,
 }: PasswordListsProps) {
   return (
-    <div className="grid grid-cols-3 w-6/6 h-5/6 mt-8 flex-1 justify-evenly gap-5">
+    <div className="grid grid-cols-3 w-full h-[600px] mt-8 gap-5 overflow-y-auto">
       {filteredPasswords.length > 0
         ? filteredPasswords.map((passwords) => (
             <CardPassword key={passwords.id} password={passwords} />

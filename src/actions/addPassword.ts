@@ -1,18 +1,28 @@
 import { selectMethod } from "@/api/methods";
-import { toBase64 } from "@/actions/toBase64";
+import { toBase64, resizeImage } from "@/actions/toBase64";
 import { AddPasswords } from "@/types/passwords";
 
 export async function addPassword(data: AddPasswords) {
   const { image, image_verification_software, name } = data;
 
-  const imageBase64 =
-    image && image[0] instanceof File ? await toBase64(image[0]) : undefined;
-
-  const imageVerificationSoftwareBase64 =
+  const imageFile = image && image[0] instanceof File ? image[0] : undefined;
+  const imageVerificationSoftwareFile =
     image_verification_software &&
     image_verification_software[0] instanceof File
-      ? await toBase64(image_verification_software[0])
+      ? image_verification_software[0]
       : undefined;
+
+  const resizedImage = imageFile
+    ? await resizeImage(imageFile, 800, 800, 0.1)
+    : undefined;
+  const resizedImageVerificationSoftware = imageVerificationSoftwareFile
+    ? await resizeImage(imageVerificationSoftwareFile, 800, 800, 0.1)
+    : undefined;
+
+  const imageBase64 = resizedImage ? await toBase64(resizedImage) : undefined;
+  const imageVerificationSoftwareBase64 = resizedImageVerificationSoftware
+    ? await toBase64(resizedImageVerificationSoftware)
+    : undefined;
 
   const newData = {
     ...data,
@@ -20,5 +30,6 @@ export async function addPassword(data: AddPasswords) {
     image: imageBase64,
     image_verification_software: imageVerificationSoftwareBase64,
   };
+
   selectMethod("post", "password", newData);
 }
