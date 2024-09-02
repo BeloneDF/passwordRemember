@@ -1,40 +1,58 @@
-import { ReactNode } from "react";
-import * as S from "./modal.styled";
+import { XIcon, LucideIcon } from "lucide-react";
+import useOpenModal from "@/hooks/useOpenModal";
 
-interface ModaLProps {
-  children: ReactNode;
-  open: boolean;
-  toggleModal: () => void;
+interface ModalProps {
+  children: React.ReactNode;
+  title: string;
+  icon: LucideIcon;
 }
 
-function Modal({ children, open, toggleModal }: ModaLProps) {
+export function Modal({ children, title, icon: Icon }: ModalProps) {
+  const { open, toggleModal } = useOpenModal();
+
   return (
     <>
-      {open === true ? (
-        <S.Container>
-          <S.Content>
-            <S.ButtonDiv>
-              <S.Button onClick={() => toggleModal()}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="currentColor"
-                  className="bi bi-x"
-                  viewBox="0 0 16 16"
+      <div className="flex items-center gap-4 mt-4">
+        <button
+          onClick={() => toggleModal()}
+          className="flex items-center gap-2 bg-zinc-800 text-white px-4 py-2 rounded-md hover:bg-zinc-900"
+        >
+          <Icon size={24} />
+          <span>{title}</span>
+        </button>
+      </div>
+
+      {open && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center w-full h-full max-h-full overflow-y-auto bg-black bg-opacity-50"
+          onClick={() => toggleModal()}
+        >
+          <div
+            className={`relative w-full max-w-md max-h-full p-4 transform transition-transform duration-300 ease-out scale-95 ${
+              open ? "scale-100" : "scale-95"
+            }`}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Content */}
+            <div className="relative bg-white rounded-lg shadow dark:bg-zinc-800 transition-opacity duration-300 ease-out">
+              {/* Modal Header */}
+              <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {title}
+                </h3>
+                <button
+                  type="button"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                  onClick={() => toggleModal()}
                 >
-                  <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708" />
-                </svg>
-              </S.Button>
-            </S.ButtonDiv>
-            {children}
-          </S.Content>
-        </S.Container>
-      ) : (
-        <></>
+                  <XIcon size={24} />
+                </button>
+              </div>
+              {children}
+            </div>
+          </div>
+        </div>
       )}
     </>
   );
 }
-
-export default Modal;

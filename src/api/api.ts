@@ -1,12 +1,14 @@
 import axios from "axios";
+import { parseCookies } from "nookies";
+const cookies = parseCookies();
 
-const api = axios.create({
+const token = typeof window !== "undefined" ? cookies.access_token : null;
+
+export const api = axios.create({
   baseURL: "https://passwordremember-production.up.railway.app/",
   headers: {
-    Authorization: "Bearer " + localStorage.getItem("acess_token"),
+    Authorization: token ? `Bearer ${token}` : "",
     Accept: "*/*",
     "Content-Type": "application/json",
   },
 });
-
-export default api;

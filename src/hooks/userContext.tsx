@@ -1,14 +1,9 @@
+"use client";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import decodeToken from "./decodeToken";
-import { selectMethod } from "../api/methods";
-
-export type User = {
-  id: string;
-  username: string;
-  email: string;
-  password: string;
-  photo: string;
-};
+import { selectMethod } from "@/api/methods";
+import { parseCookies } from "nookies";
+import { User } from "@/types/user";
 
 interface UserProviderProps {
   children: ReactNode;
@@ -24,21 +19,28 @@ const UserContext = createContext<
 
 const UserProvider = ({ children }: UserProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
-  const token = localStorage.getItem("acess_token") as string;
-  const decode = decodeToken(token);
+  const cookies = parseCookies();
+  const token = cookies.access_token;
 
-  async function getUser() {
-    try {
-      const response = await selectMethod("get", `users/${decode.sub}`);
-      setUser(response.data.user);
-    } catch (error) {
-      console.error(error);
-    }
-  }
   useEffect(() => {
+    if (!token) {
+      console.error("No access token found in cookies");
+      return;
+    }
+
+    const decode = decodeToken(token);
+
+    async function getUser() {
+      try {
+        const response = await selectMethod("get", `users/${decode.sub}`);
+        setUser(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user:", error); // Debugging
+      }
+    }
+
     getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [token]);
 
   return (
     <UserContext.Provider value={{ user, setUser }}>

@@ -1,5 +1,6 @@
+"use client";
 import { useState } from "react";
-import { Passwords } from "../types/passwords";
+import { Passwords } from "@/types/passwords";
 
 export function useFilter(passwords: Passwords[]) {
   const [search, setSearch] = useState("");

@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 function useOpenModal() {
   const [open, setOpen] = useState(false);
 
   function toggleModal() {
-    setOpen(prev => !prev);
+    setOpen((prev) => !prev);
   }
 
   return {
