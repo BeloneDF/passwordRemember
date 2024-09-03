@@ -9,7 +9,7 @@ export default function Home() {
   const userContext = useContext(UserContext);
 
   if (!userContext) {
-    return <div>Loading...</div>;
+    return;
   }
 
   const { user } = userContext;

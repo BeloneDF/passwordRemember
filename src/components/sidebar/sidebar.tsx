@@ -5,6 +5,7 @@ import { useEditProfile } from "@/hooks/useEditProfile";
 import { useChangeUser } from "@/hooks/useChangeUser";
 import { selectMethod } from "@/api/methods";
 import { Data } from "@/api/methods";
+import { SidebarSkeleton } from "./skeleton";
 
 export function Sidebar({ user }: { user: User | null }) {
   const { edit, handleEdit } = useEditProfile();
@@ -28,7 +29,7 @@ export function Sidebar({ user }: { user: User | null }) {
   }
 
   if (!user) {
-    return null;
+    return <SidebarSkeleton />;
   }
 
   return (
