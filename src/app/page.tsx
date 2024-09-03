@@ -6,20 +6,23 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addUser } from "@/actions/addUser";
 import { CreateUserSchema, createUserProps } from "@/types/createUser";
+import { ButtonLoader } from "@/components/loaders/buttonLoader/buttonsLoader";
+import { useLoading } from "@/hooks/useLoading";
 
 export default function Home() {
   const { state, handleRender } = useRenderLogin();
-
+  const { loading, setLoading } = useLoading();
   const { register, handleSubmit } = useForm<CreateUserSchema>({
     resolver: zodResolver(createUserProps),
   });
-
+  console.error(loading);
   async function handle({
     email,
     username,
     password,
     photo,
   }: CreateUserSchema) {
+    setLoading(true);
     if (username) {
       try {
         if (!photo) {
@@ -98,6 +101,7 @@ export default function Home() {
                           id="email"
                           placeholder="name@example.com"
                           type="email"
+                          autoComplete="off"
                           {...register("email")}
                         ></input>
                       </div>
@@ -108,15 +112,25 @@ export default function Home() {
                           id="password"
                           placeholder="Your password"
                           type="password"
+                          autoComplete="off"
                           {...register("password")}
                         ></input>
                       </div>
-                      <button
-                        type="submit"
-                        className="bg-white rounded-md h-9 text-zinc-950 "
-                      >
-                        Log In
-                      </button>
+                      {loading ? (
+                        <button
+                          type="submit"
+                          className="bg-white rounded-md h-9 text-zinc-950 "
+                        >
+                          <ButtonLoader />
+                        </button>
+                      ) : (
+                        <button
+                          type="submit"
+                          className="bg-white rounded-md h-9 text-zinc-950 "
+                        >
+                          Log In
+                        </button>
+                      )}
                     </form>
                   </div>
                 </div>
@@ -162,6 +176,7 @@ export default function Home() {
                           id="username"
                           placeholder="Exemple: John Doe"
                           type="username"
+                          autoComplete="off"
                           {...register("username")}
                         ></input>
                       </div>
@@ -172,6 +187,7 @@ export default function Home() {
                           id="password"
                           placeholder="Your password"
                           type="password"
+                          autoComplete="off"
                           {...register("password")}
                         ></input>
                       </div>
@@ -186,9 +202,7 @@ export default function Home() {
                 </div>
                 <p className="px-8 text-center text-sm text-muted-foreground mt-4">
                   By clicking continue, you agree to our <br />
-                  <a className="text-white underline">
-                    Terms of Service
-                  </a> and{" "}
+                  <a className="text-white underline">Terms of Service</a> and
                   <a className="text-white underline">Privacy Policy</a>
                 </p>
               </div>

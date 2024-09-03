@@ -1,20 +1,21 @@
 "use client";
 import { Image, Plus } from "lucide-react";
-import InputText from "../inputText/inputText";
 import { addPassword } from "@/actions/addPassword";
 import { useContext } from "react";
 import { UserContext } from "@/hooks/userContext";
 import { useForm } from "react-hook-form";
-
+import { useLoading } from "@/hooks/useLoading";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { passwordsSchema } from "@/types/passwords";
+import { ModalLoader } from "../loaders/modalLoader/modalLoader";
 
 type CreatePasswordSchema = z.infer<typeof passwordsSchema>;
 
 export function NewPassword() {
+  const { loading, setLoading } = useLoading();
   const userContext = useContext(UserContext);
-
+  console.log(loading);
   if (!userContext) {
     return <div>Loading...</div>;
   }
@@ -34,6 +35,7 @@ export function NewPassword() {
     verificarion_software,
     image_verification_software,
   }: CreatePasswordSchema) {
+    setLoading(true);
     try {
       await addPassword({
         name,
@@ -47,11 +49,16 @@ export function NewPassword() {
       });
     } catch (error) {
       console.error(error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 400);
     }
   }
 
   return (
     <form className="p-4 md:p-5" onSubmit={handleSubmit(createPassword)}>
+      {loading && <ModalLoader />}
       <div className="grid grid-cols-2 gap-4 mb-4">
         <div className="col-span-2">
           <div>
