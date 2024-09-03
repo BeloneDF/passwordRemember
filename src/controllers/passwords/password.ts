@@ -45,6 +45,9 @@ export async function GetPasswordsByUserId(id: string) {
       where: {
         userId: id,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
     const token = jwt.sign(
       {
