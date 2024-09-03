@@ -14,7 +14,7 @@ export function Filter({ user }: { user: User | null }) {
   useEffect(() => {
     if (user !== null && !hasFetchedPasswords.current) {
       getPasswords({ user, setPasswords });
-      hasFetchedPasswords.current = true; // Evitar múltiplas chamadas
+      hasFetchedPasswords.current = true;
     }
   }, [user, setPasswords]);
 

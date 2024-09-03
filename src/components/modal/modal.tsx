@@ -9,7 +9,6 @@ interface ModalProps {
 
 export function Modal({ children, title, icon: Icon }: ModalProps) {
   const { open, toggleModal } = useOpenModal();
-
   return (
     <>
       <div className="flex items-center gap-4 mt-4">

@@ -8,8 +8,6 @@ interface User {
 }
 
 export async function login(data: User) {
-  console.log("DATA");
-
   try {
     const response = await selectMethod("post", "/login", {
       email: data.email,

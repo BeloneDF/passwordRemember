@@ -1,4 +1,5 @@
-import { CircleUser, Edit, Save, LogOut } from "lucide-react";
+import { useState, useRef } from "react";
+import { Edit, Save, LogOut } from "lucide-react";
 import { User } from "@/types/user";
 import { logOut } from "@/actions/logOut";
 import { useEditProfile } from "@/hooks/useEditProfile";
@@ -10,19 +11,36 @@ import { SidebarSkeleton } from "./skeleton";
 export function Sidebar({ user }: { user: User | null }) {
   const { edit, handleEdit } = useEditProfile();
   const { changedUser, handleChangeUser } = useChangeUser();
+  const [image, setImage] = useState(user?.photo);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+        handleChangeUser(reader.result as string, "photo");
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   async function saveChanges() {
     const userData: Data = {
       username:
-        changedUser.username === user?.username ? "" : changedUser.username,
-      email: changedUser.email === user?.email ? "" : changedUser.email,
+        changedUser.username.length === 0
+          ? user?.username
+          : changedUser.username,
+      email: changedUser.email.length === 0 ? user?.email : changedUser.email,
       password:
-        changedUser.password === user?.password ? "" : changedUser.password,
-      photo: changedUser.photo || "",
+        changedUser.password.length === 0
+          ? user?.password
+          : changedUser.password,
+      photo: changedUser.photo || image || "",
     };
     try {
       const response = await selectMethod("put", `users/${user?.id}`, userData);
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -35,16 +53,30 @@ export function Sidebar({ user }: { user: User | null }) {
   return (
     <aside className="w-72 bg-zinc-950 p-6 text-white">
       <div className="flex gap-4 p-2 items-center justify-between">
-        <span className="font-bold text-lg"> Wellcome, {user?.username}!</span>
-        {user?.photo ? (
-          <img
-            src={user?.photo}
-            alt={user?.username}
-            className="w-16 h-16 rounded-full"
-          />
-        ) : (
-          <CircleUser size={"64px"} />
-        )}
+        <span className="font-bold text-lg">Welcome, {user?.username}!</span>
+        <div
+          className="w-14 h-14 rounded-full flex items-center justify-center bg-zinc-900 cursor-pointer"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          {user?.photo ? (
+            <img
+              className="w-full h-full object-cover rounded-full"
+              src={user?.photo}
+              alt={user?.username}
+            />
+          ) : (
+            <span className="text-white text-3xl">
+              {user?.username?.split(" ")[0][0].toUpperCase()}
+            </span>
+          )}
+        </div>
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: "none" }}
+          onChange={handleImageChange}
+          accept="image/*"
+        />
       </div>
       <div className="mt-4 flex flex-col gap-4">
         <div className="gap-2 flex flex-col">

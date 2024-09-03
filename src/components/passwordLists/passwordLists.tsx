@@ -15,7 +15,7 @@ export function PasswordLists({
     return <SkeletonPasswordLists />;
   }
   return (
-    <div className="grid grid-cols-3 w-full h-[600px] mt-8 gap-5 overflow-y-auto">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 w-full h-[600px] mt-8 gap-4 overflow-y-auto">
       {filteredPasswords.length > 0
         ? filteredPasswords.map((passwords) => (
             <CardPassword key={passwords.id} password={passwords} />

@@ -15,7 +15,6 @@ export default function Home() {
   const { register, handleSubmit } = useForm<CreateUserSchema>({
     resolver: zodResolver(createUserProps),
   });
-  console.error(loading);
   async function handle({
     email,
     username,
