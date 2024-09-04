@@ -12,9 +12,11 @@ import { useLoading } from "@/hooks/useLoading";
 export default function Home() {
   const { state, handleRender } = useRenderLogin();
   const { loading, setLoading } = useLoading();
+  console.log(state);
   const { register, handleSubmit } = useForm<CreateUserSchema>({
     resolver: zodResolver(createUserProps),
   });
+
   async function handle({
     email,
     username,
@@ -22,193 +24,123 @@ export default function Home() {
     photo,
   }: CreateUserSchema) {
     setLoading(true);
-    if (username) {
-      try {
-        if (!photo) {
-          photo = "";
-        }
-        await addUser({ email, username, password, photo });
-      } catch (error) {
-        console.error(error);
-      }
-    } else {
-      try {
+    try {
+      if (email && password && !username && state) {
         await LoginAction({ email, password });
-      } catch (error) {
-        console.error(error);
+      } else if (username && email && password && !state) {
+        await addUser({ email, username, password, photo: photo || "" });
       }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   }
+
   return (
-    <>
-      <div className="w-[60%] h-[80%] flex p-0 bg-zinc-900 text-white/90">
-        <div className="w-[50%] h-[100%] p-4 flex flex-col border-none bg-zinc-800 rounded-tl-lg rounded-bl-lg">
-          <div className="flex flex-1 flex-col gap-4">
-            <header className="text-zinc-400 h-10 flex items-center">
-              <div className="flex gap-2 items-center p-2">
-                <Shield size={32} />
-                <span className="text-md">Wellcome to Password Remember!</span>
+    <div className="flex w-3/5 h-4/5 bg-zinc-900 text-white/90">
+      <section className="flex flex-col w-1/2 h-full p-4 bg-zinc-800 rounded-tl-lg rounded-bl-lg">
+        <header className="flex items-center gap-2 p-2 text-zinc-400">
+          <Shield size={32} />
+          <span className="text-md">Welcome to Password Remember!</span>
+        </header>
+        <div className="flex flex-col justify-center flex-1">
+          <img
+            src="logo.png"
+            alt="Logo"
+            className="object-cover w-full drop-shadow-[5px_5px_5px_#00000073]"
+          />
+        </div>
+        <footer className="flex items-center justify-center h-10 text-sm text-zinc-400">
+          © 2024 - All rights reserved - @belone.fraga
+        </footer>
+      </section>
+
+      <main className="flex flex-col w-1/2 h-full p-4 bg-zinc-950 rounded-tr-lg rounded-br-lg">
+        <div className="flex justify-end">
+          <button
+            onClick={handleRender}
+            className="w-16 h-8 flex items-center justify-center hover:bg-zinc-800 rounded-md text-sm transition-colors"
+          >
+            {state ? "Sign In" : "Login"}
+          </button>
+        </div>
+        <div className="flex items-center justify-center flex-1">
+          <div className="w-4/5">
+            <div className="flex flex-col space-y-6">
+              <div className="text-center">
+                <h1 className="text-2xl font-semibold tracking-tight">
+                  {state ? "Log in to your account" : "Create an account"}
+                </h1>
+                <p className="text-sm text-muted-foreground">
+                  {state
+                    ? "Enter your credentials to access your account"
+                    : "Enter your data below to create your account"}
+                </p>
               </div>
-            </header>
-            <main className="h-full flex items-center justify-center">
-              <img
-                src="logo.png"
-                alt=""
-                className="w-[100%] object-cover drop-shadow-[5px_5px_5px_#00000073]"
-              />
-            </main>
-            <footer className=" h-10 flex items-end justify-center">
-              <div className="text-sm text-zinc-400 flex justify-center ">
-                <span>
-                  All rights reserved &copy;2024 Belone Zorzetto Fraga
-                </span>
-              </div>
-            </footer>
+
+              <form
+                onSubmit={handleSubmit(handle)}
+                className="flex flex-col space-y-2"
+              >
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm">Email</label>
+                  <input
+                    className="h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50"
+                    id="email"
+                    placeholder="name@example.com"
+                    type="email"
+                    autoComplete="off"
+                    {...register("email")}
+                  />
+                </div>
+
+                {!state && (
+                  <div className="flex flex-col gap-1">
+                    <label className="text-sm">Username</label>
+                    <input
+                      className="h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50"
+                      id="username"
+                      placeholder="Ex: John Doe"
+                      autoComplete="off"
+                      {...register("username")}
+                    />
+                  </div>
+                )}
+
+                <div className="flex flex-col gap-1">
+                  <label className="text-sm">Password</label>
+                  <input
+                    className="h-9 w-full rounded-md border bg-transparent px-3 py-1 text-sm shadow-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50"
+                    id="password"
+                    placeholder="Your password"
+                    type="password"
+                    autoComplete="off"
+                    {...register("password")}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className={`h-9 w-full rounded-md text-zinc-950 ${
+                    loading
+                      ? "bg-zinc-800"
+                      : "bg-white hover:bg-gray-200 transition-colors"
+                  }`}
+                  disabled={loading}
+                >
+                  {loading ? <ButtonLoader /> : state ? "Log In" : "Sign Up"}
+                </button>
+              </form>
+            </div>
+            <p className="mt-4 text-sm text-center text-muted-foreground">
+              By clicking continue, you agree to our{" "}
+              <a className="text-white underline">Terms of Service</a> and{" "}
+              <a className="text-white underline">Privacy Policy</a>.
+            </p>
           </div>
         </div>
-        <main className="w-[50%] h-[100%] border-none bg-zinc-950 rounded-tr-lg rounded-br-lg">
-          <div className="p-4 flex items-center justify-end">
-            <button
-              onClick={handleRender}
-              className="w-16 h-8 flex items-center justify-center hover:bg-zinc-800 rounded-md text-sm"
-            >
-              {state ? "Sign In" : "Login"}
-            </button>
-          </div>
-          <div className="items-center w-[100%] h-[90%] flex justify-center">
-            {state ? (
-              <div className="w-[70%]">
-                <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[80%] transition-all">
-                  <div className="flex flex-col space-y-2 text-center">
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                      Log in to your account
-                    </h1>
-                    <p className="text-sm text-muted-foreground">
-                      Enter your credentials to access your account
-                    </p>
-                  </div>
-
-                  <div className="grid gap-1">
-                    <form
-                      onSubmit={handleSubmit(handle)}
-                      className="grid gap-2"
-                    >
-                      <div className="grid gap-1">
-                        <label className="text-sm">Email</label>
-                        <input
-                          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                          id="email"
-                          placeholder="name@example.com"
-                          type="email"
-                          autoComplete="off"
-                          {...register("email")}
-                        ></input>
-                      </div>
-                      <div className="grid gap-1">
-                        <label className="text-sm">Password</label>
-                        <input
-                          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                          id="password"
-                          placeholder="Your password"
-                          type="password"
-                          autoComplete="off"
-                          {...register("password")}
-                        ></input>
-                      </div>
-                      {loading ? (
-                        <button
-                          type="submit"
-                          className="bg-white rounded-md h-9 text-zinc-950 "
-                        >
-                          <ButtonLoader />
-                        </button>
-                      ) : (
-                        <button
-                          type="submit"
-                          className="bg-white rounded-md h-9 text-zinc-950 "
-                        >
-                          Log In
-                        </button>
-                      )}
-                    </form>
-                  </div>
-                </div>
-                <p className="px-8 text-center text-sm text-muted-foreground mt-4">
-                  By clicking continue, you agree to our <br />
-                  <a className="text-white underline">
-                    Terms of Service
-                  </a> and{" "}
-                  <a className="text-white underline">Privacy Policy</a>
-                </p>
-              </div>
-            ) : (
-              <div className="w-[70%]">
-                <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[80%] transition-all">
-                  <div className="flex flex-col space-y-2 text-center">
-                    <h1 className="text-2xl font-semibold tracking-tight">
-                      Create an account
-                    </h1>
-                    <p className="text-sm text-muted-foreground">
-                      Enter your data below to create your account
-                    </p>
-                  </div>
-
-                  <div className="grid gap-1">
-                    <form
-                      onSubmit={handleSubmit(handle)}
-                      className="grid gap-2"
-                    >
-                      <div className="grid gap-1">
-                        <label className="text-sm">Email</label>
-                        <input
-                          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                          id="email"
-                          placeholder="name@example.com"
-                          type="email"
-                          {...register("email")}
-                        ></input>
-                      </div>
-                      <div className="grid gap-1">
-                        <label className="text-sm">Username</label>
-                        <input
-                          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                          id="username"
-                          placeholder="Exemple: John Doe"
-                          type="username"
-                          autoComplete="off"
-                          {...register("username")}
-                        ></input>
-                      </div>
-                      <div className="grid gap-1">
-                        <label className="text-sm">Password</label>
-                        <input
-                          className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-                          id="password"
-                          placeholder="Your password"
-                          type="password"
-                          autoComplete="off"
-                          {...register("password")}
-                        ></input>
-                      </div>
-                      <button
-                        type="submit"
-                        className="bg-white rounded-md h-9 text-zinc-950 "
-                      >
-                        Sign In
-                      </button>
-                    </form>
-                  </div>
-                </div>
-                <p className="px-8 text-center text-sm text-muted-foreground mt-4">
-                  By clicking continue, you agree to our <br />
-                  <a className="text-white underline">Terms of Service</a> and
-                  <a className="text-white underline">Privacy Policy</a>
-                </p>
-              </div>
-            )}
-          </div>
-        </main>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

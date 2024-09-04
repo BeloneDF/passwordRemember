@@ -55,12 +55,12 @@ export function Sidebar({ user }: { user: User | null }) {
       <div className="flex gap-4 p-2 items-center justify-between">
         <span className="font-bold text-lg">Welcome, {user?.username}!</span>
         <div
-          className="w-14 h-14 rounded-full flex items-center justify-center bg-zinc-900 cursor-pointer"
+          className={`w-20 rounded-full bg-zinc-900 cursor-pointer ${!edit ? "border" : ""}`}
           onClick={() => fileInputRef.current?.click()}
         >
           {user?.photo ? (
             <img
-              className="w-full h-full object-cover rounded-full"
+              className={`w-20 object-cover rounded-full ${!edit ? "border" : ""}`}
               src={user?.photo}
               alt={user?.username}
             />

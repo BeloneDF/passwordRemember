@@ -5,7 +5,8 @@ import { Copy, RefreshCcw } from "lucide-react";
 import { useGenPassword } from "@/hooks/useGenPassword";
 import { copyToClipboardNewPassword } from "@/actions/copyToClipboard";
 import { ProgressBar } from "../progressBar/progressBar";
-//import { usePasswordTypes } from "@/hooks/usePasswordTypes"; arrumar depois
+import { MyCheckBox } from "../inputText/inputCheckbox";
+
 type PasswordType = "uppercase" | "lowercase" | "symbols" | "numbers";
 
 export function PasswordGenerator() {
@@ -34,48 +35,24 @@ export function PasswordGenerator() {
       />
       <div className="p-4 flex flex-col gap-2">
         <div className="grid-cols-2 grid">
-          <div>
-            <input
-              className="w-5 h-5"
-              type="checkbox"
-              onChange={() => handlePasswordTypeChange("uppercase")}
-            />
-            <label className="ml-4 text-gray-900 dark:text-white">
-              Uppercase
-            </label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              className="w-5 h-5"
-              onChange={() => handlePasswordTypeChange("lowercase")}
-            />
-            <label className="ml-4 text-gray-900 dark:text-white">
-              Lowercase
-            </label>
-          </div>
+          <MyCheckBox
+            label="Uppercase"
+            onChange={() => handlePasswordTypeChange("uppercase")}
+          />
+          <MyCheckBox
+            label="Lowercase"
+            onChange={() => handlePasswordTypeChange("lowercase")}
+          />
         </div>
         <div className="grid-cols-2 grid">
-          <div>
-            <input
-              type="checkbox"
-              className="w-5 h-5"
-              onChange={() => handlePasswordTypeChange("symbols")}
-            />
-            <label className="ml-4 text-gray-900 dark:text-white">
-              Symbols
-            </label>
-          </div>
-          <div>
-            <input
-              type="checkbox"
-              className="w-5 h-5"
-              onChange={() => handlePasswordTypeChange("numbers")}
-            />
-            <label className="ml-4 text-gray-900 dark:text-white">
-              Numbers
-            </label>
-          </div>
+          <MyCheckBox
+            label="Symbols"
+            onChange={() => handlePasswordTypeChange("symbols")}
+          />
+          <MyCheckBox
+            label="Numbers"
+            onChange={() => handlePasswordTypeChange("numbers")}
+          />
         </div>
       </div>
 
