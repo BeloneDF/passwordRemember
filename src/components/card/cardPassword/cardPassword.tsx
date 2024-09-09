@@ -1,13 +1,16 @@
 import { Passwords } from "@/types/passwords";
-import { ImageOff, Trash, Pencil, Copy } from "lucide-react";
+import { ImageOff, Trash, Pencil, Copy, Check } from "lucide-react";
 import { deletePassword } from "@/actions/deletePasswords";
 import { copyToClipboard } from "@/actions/copyToClipboard";
+import { Toast } from "@/components/toast";
+import { useIsVisible } from "@/hooks/useisVisible";
 
 interface CardPasswordProps {
   password: Passwords;
 }
 
 export function CardPassword({ password }: CardPasswordProps) {
+  const { isVisible, toggleVisible } = useIsVisible();
   return (
     <div className="flex gap-4 bg-zinc-800 h-32 p-4 rounded-lg text-white hover:bg-white/5 transition-colors">
       <div className="flex justify-center items-center w-1/4">
@@ -52,10 +55,34 @@ export function CardPassword({ password }: CardPasswordProps) {
             alt=""
           />
           <button
-            onClick={() => password && deletePassword({ password })}
-            className="text-sm text-red-500 h-6 w-6 items-center flex justify-center rounded-lg hover:bg-red-700 hover:text-white"
+            onClick={() => {
+              if (password) {
+                deletePassword({ password });
+                toggleVisible();
+              }
+            }}
+            className="text-sm text-red-00 h-6 w-6 items-center flex justify-center rounded-lg hover:bg-red-700 hover:text-white"
           >
-            <Trash size={16} className="" />
+            {isVisible && (
+              <div className="fixed bottom-4 right-4 z-[999]">
+                <Toast.Root isVisible={isVisible}>
+                  <Toast.Icon icon={Trash} className="text-red-400" />
+                  <Toast.Content
+                    text="Succefull passwrod Deleted!"
+                    subtitle="Password deleted: "
+                    span={`${password.name}`}
+                  />
+                  <Toast.Actions>
+                    <Toast.Action
+                      icon={Check}
+                      className="bg-emerald-500 text-white hover:bg-emerald-600"
+                      onClick={toggleVisible}
+                    />
+                  </Toast.Actions>
+                </Toast.Root>
+              </div>
+            )}
+            <Trash size={16} />
           </button>
           <button className="text-sm text-blue-500 h-6 w-6 items-center flex justify-center rounded-lg hover:bg-blue-700 hover:text-white">
             <Pencil size={16} />

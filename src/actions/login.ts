@@ -23,8 +23,9 @@ export async function login(data: User) {
         sameSite: "lax", // Proteção contra CSRF
       });
     }
-
-    window.location.href = "/Home";
+    return {
+      status: response.status,
+    };
   } catch (error) {
     console.error(error);
   }

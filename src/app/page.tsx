@@ -1,6 +1,6 @@
 "use client";
 import { login as LoginAction } from "@/actions/login";
-import { Shield } from "lucide-react";
+import { Shield, Clock, Check } from "lucide-react";
 import { useRenderLogin } from "@/hooks/useRenderLogin";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,11 +8,15 @@ import { addUser } from "@/actions/addUser";
 import { CreateUserSchema, createUserProps } from "@/types/createUser";
 import { ButtonLoader } from "@/components/loaders/buttonLoader/buttonsLoader";
 import { useLoading } from "@/hooks/useLoading";
+import { Toast } from "@/components/toast";
+import { useState } from "react";
+import { useIsVisible } from "@/hooks/useisVisible";
 
 export default function Home() {
   const { state, handleRender } = useRenderLogin();
   const { loading, setLoading } = useLoading();
-  console.log(state);
+  const [handliing, setHendling] = useState("");
+  const { isVisible, toggleVisible } = useIsVisible();
   const { register, handleSubmit } = useForm<CreateUserSchema>({
     resolver: zodResolver(createUserProps),
   });
@@ -26,8 +30,18 @@ export default function Home() {
     setLoading(true);
     try {
       if (email && password && !username && state) {
-        await LoginAction({ email, password });
+        const log = await LoginAction({ email, password });
+        if (log?.status === 200) {
+          setHendling("login");
+          toggleVisible();
+          setTimeout(() => {
+            window.location.href = "/Home";
+          }, 300);
+        }
       } else if (username && email && password && !state) {
+        console.log("entrou");
+        toggleVisible();
+        setHendling("sigin");
         await addUser({ email, username, password, photo: photo || "" });
       }
     } catch (error) {
@@ -141,6 +155,38 @@ export default function Home() {
           </div>
         </div>
       </main>
+      {handliing === "sigin" && (
+        <div className="fixed top-4 right-4 z-[999]">
+          <Toast.Root isVisible={isVisible}>
+            <Toast.Icon icon={Clock} className="text-emerald-400" />
+            <Toast.Content
+              text="You need to verify you account!"
+              subtitle="We've sent a e-mail for you."
+            />
+            <Toast.Actions>
+              <Toast.Action
+                icon={Check}
+                className="bg-emerald-500 text-white hover:bg-emerald-600"
+              />
+            </Toast.Actions>
+          </Toast.Root>
+        </div>
+      )}
+      {handliing === "login" && (
+        <div className="fixed top-4 right-4 z-[999]">
+          <Toast.Root isVisible={isVisible}>
+            <Toast.Icon icon={Clock} className="text-emerald-400" />
+            <Toast.Content text="Suceffull Login!" />
+            <Toast.Actions>
+              <Toast.Action
+                icon={Check}
+                className="bg-emerald-500 text-white hover:bg-emerald-600"
+                onClick={() => console.log("click")}
+              />
+            </Toast.Actions>
+          </Toast.Root>
+        </div>
+      )}
     </div>
   );
 }

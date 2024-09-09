@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import { Edit, Save, LogOut } from "lucide-react";
+import { Edit, Save, LogOut, Check, X } from "lucide-react";
 import { User } from "@/types/user";
 import { logOut } from "@/actions/logOut";
 import { useEditProfile } from "@/hooks/useEditProfile";
@@ -7,11 +7,15 @@ import { useChangeUser } from "@/hooks/useChangeUser";
 import { selectMethod } from "@/api/methods";
 import { Data } from "@/api/methods";
 import { SidebarSkeleton } from "./skeleton";
+import { useIsVisible } from "@/hooks/useisVisible";
+import { Toast } from "../toast";
 
 export function Sidebar({ user }: { user: User | null }) {
   const { edit, handleEdit } = useEditProfile();
   const { changedUser, handleChangeUser } = useChangeUser();
+  const { isVisible, toggleVisible } = useIsVisible();
   const [image, setImage] = useState(user?.photo);
+  const [error, setError] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,22 +31,42 @@ export function Sidebar({ user }: { user: User | null }) {
   };
 
   async function saveChanges() {
-    const userData: Data = {
-      username:
-        changedUser.username.length === 0
-          ? user?.username
-          : changedUser.username,
-      email: changedUser.email.length === 0 ? user?.email : changedUser.email,
-      password:
-        changedUser.password.length === 0
-          ? user?.password
-          : changedUser.password,
-      photo: changedUser.photo || image || "",
-    };
     try {
+      const userData: Partial<Data> = {};
+
+      if (changedUser?.username && changedUser.username.trim()) {
+        userData.username = changedUser.username.trim();
+      }
+
+      if (changedUser?.email && changedUser.email.trim()) {
+        userData.email = changedUser.email.trim();
+      }
+
+      if (changedUser?.password && changedUser.password.trim()) {
+        userData.password = changedUser.password.trim();
+      }
+
+      if (changedUser?.photo || image) {
+        userData.photo = changedUser.photo || image || "";
+      }
+
+      if (Object.keys(userData).length === 0) {
+        toggleVisible();
+        setError(true);
+        return;
+      }
+
       const response = await selectMethod("put", `users/${user?.id}`, userData);
+
+      if (response) {
+        toggleVisible();
+        setTimeout(() => {
+          toggleVisible();
+        }, 3000);
+      }
     } catch (error) {
-      console.log(error);
+      setError(true);
+      console.error("Error saving changes:", error);
     }
   }
 
@@ -122,7 +146,7 @@ export function Sidebar({ user }: { user: User | null }) {
 
           <button
             onClick={saveChanges}
-            className="bg-green-700 text-white p-2 rounded-md w-2/3 items-center flex justify-center hover:bg-green-600 hover:text-white transition-all"
+            className="bg-emerald-800 text-white p-2 rounded-md w-2/3 items-center flex justify-center hover:bg-emerald-700 hover:text-white transition-all"
           >
             <Save />
           </button>
@@ -140,6 +164,39 @@ export function Sidebar({ user }: { user: User | null }) {
           Log Out
         </button>
       </footer>
+      {isVisible && error === false ? (
+        <div className="fixed bottom-4 right-4 z-[999]">
+          <Toast.Root isVisible={isVisible}>
+            <Toast.Icon icon={Check} className="text-emerald-400" />
+            <Toast.Content
+              text="Perfil updated succefully!"
+              subtitle="Password deleted: "
+            />
+            <Toast.Actions>
+              <Toast.Action
+                icon={Check}
+                className="bg-emerald-500 text-white hover:bg-emerald-600"
+                onClick={toggleVisible}
+              />
+            </Toast.Actions>
+          </Toast.Root>
+        </div>
+      ) : null}
+      {isVisible && error === true ? (
+        <div className="fixed bottom-4 right-4 z-[999]">
+          <Toast.Root isVisible={isVisible}>
+            <Toast.Icon icon={X} className="text-red-400" />
+            <Toast.Content text="Error while updating user!" subtitle="Error" />
+            <Toast.Actions>
+              <Toast.Action
+                icon={Check}
+                className="bg-red-500 text-white hover:bg-red-600"
+                onClick={toggleVisible}
+              />
+            </Toast.Actions>
+          </Toast.Root>
+        </div>
+      ) : null}
     </aside>
   );
 }

@@ -16,6 +16,7 @@ export async function getPasswords({
 }) {
   try {
     const response = await selectMethod("get", `passwordsByUser/${user?.id}`);
+    console.log(jwtDecode<MyJwtPayload>(response.data.token).data);
     return setPasswords(jwtDecode<MyJwtPayload>(response.data.token).data);
   } catch (error) {
     console.error(error);
